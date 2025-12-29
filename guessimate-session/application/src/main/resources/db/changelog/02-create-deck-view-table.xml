@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.23.xsd">
+
+    <changeSet id="create-deck-view-table" author="davidodb">
+        <createTable tableName="deck_view">
+            <column name="name" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cards" type="clob">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_default" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="display_order" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="seed-deck-data" author="davidodb">
+        <insert tableName="deck_view">
+            <column name="name" value="Modified Fibonacci"/>
+            <column name="cards" value='["0","0.5","1","2","3","5","8","13"]'/>
+            <column name="is_default" valueBoolean="true"/>
+            <column name="display_order" valueNumeric="1"/>
+        </insert>
+        <insert tableName="deck_view">
+            <column name="name" value="Fibonacci"/>
+            <column name="cards" value='["0","1","2","3","5","8","13","21"]'/>
+            <column name="is_default" valueBoolean="false"/>
+            <column name="display_order" valueNumeric="2"/>
+        </insert>
+        <insert tableName="deck_view">
+            <column name="name" value="Powers of 2"/>
+            <column name="cards" value='["0","1","2","4","8","16","32","64"]'/>
+            <column name="is_default" valueBoolean="false"/>
+            <column name="display_order" valueNumeric="3"/>
+        </insert>
+        <insert tableName="deck_view">
+            <column name="name" value="T-shirt"/>
+            <column name="cards" value='["XS","S","M","L","XL","XXL"]'/>
+            <column name="is_default" valueBoolean="false"/>
+            <column name="display_order" valueNumeric="4"/>
+        </insert>
+        <insert tableName="deck_view">
+            <column name="name" value="Sequential"/>
+            <column name="cards" value='["1","2","3","4","5","6","7","8"]'/>
+            <column name="is_default" valueBoolean="false"/>
+            <column name="display_order" valueNumeric="5"/>
+        </insert>
+        <insert tableName="deck_view">
+            <column name="name" value="Risk Level"/>
+            <column name="cards" value='["L","M","H"]'/>
+            <column name="is_default" valueBoolean="false"/>
+            <column name="display_order" valueNumeric="6"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    name: guessimate
+    url: jdbc:tc:postgresql:///guessimate
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/master-session-api.xml
