@@ -1,10 +1,8 @@
-import org.springframework.boot.gradle.tasks.bundling.BootJar
-
 plugins {
     id("org.springframework.boot") version "3.4.12"
 }
 
-tasks.named<BootJar>("bootJar") {
+springBoot {
     mainClass.set("app.dodb.guessimate.application.GuessimateApplication")
 }
 
