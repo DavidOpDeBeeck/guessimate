@@ -1,10 +1,7 @@
 package app.dodb.guessimate.session.drivenadapter.deckview;
 
 import app.dodb.guessimate.session.api.deck.DeckTO;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.JdbcTypeCode;
