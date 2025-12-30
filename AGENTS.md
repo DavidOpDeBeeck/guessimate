@@ -654,6 +654,8 @@ refactor: extract insight resolution logic to separate resolvers
 test: add usecase tests for SetEstimateCommand handler
 ```
 
+**Note**: Do NOT include AI attribution lines like "Generated with Claude Code" or "Co-Authored-By: Claude Sonnet" in commit messages.
+
 ### Commit Guidelines
 
 1. **Atomic commits** - Each commit should represent one logical change. Don't mix unrelated changes.
