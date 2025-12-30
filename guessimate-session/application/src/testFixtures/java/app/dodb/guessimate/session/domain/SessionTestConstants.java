@@ -1,6 +1,5 @@
 package app.dodb.guessimate.session.domain;
 
-import app.dodb.guessimate.session.domain.deck.Card;
 import app.dodb.guessimate.session.domain.deck.Deck;
 import app.dodb.guessimate.session.domain.deck.DeckName;
 
@@ -29,22 +28,13 @@ public class SessionTestConstants {
     }
 
     public static Deck aDeck() {
-        return new Deck(DECK_NAME, List.of(new Card("1"), new Card("2")));
+        return new Deck(DECK_NAME, List.of("1", "2"));
     }
 
     public static Deck modifiedFibonacci() {
         return new Deck(
             new DeckName("Modified Fibonacci"),
-            List.of(
-                new Card("0"),
-                new Card("0.5"),
-                new Card("1"),
-                new Card("2"),
-                new Card("3"),
-                new Card("5"),
-                new Card("8"),
-                new Card("13")
-            )
+            List.of("0", "0.5", "1", "2", "3", "5", "8", "13")
         );
     }
 

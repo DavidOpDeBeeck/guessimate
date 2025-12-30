@@ -6,9 +6,7 @@ import app.dodb.guessimate.session.api.event.EstimationRemovedEvent;
 
 import java.util.Set;
 
-import static app.dodb.guessimate.session.utils.MapUtils.transform;
 import static java.util.Objects.requireNonNull;
-import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toSet;
 
 public class SessionViewData {
@@ -23,7 +21,7 @@ public class SessionViewData {
     }
 
     void apply(EstimationAddedEvent event) {
-        var votesByEstimate = transform(event.votesByEstimate(), identity(), identity());
+        var votesByEstimate = event.votesByEstimate();
         var insights = event.insights().stream()
             .map(Enum::toString)
             .collect(toSet());

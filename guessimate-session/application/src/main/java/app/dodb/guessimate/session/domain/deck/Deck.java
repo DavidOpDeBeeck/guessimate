@@ -9,32 +9,30 @@ import java.util.List;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
 
-public record Deck(DeckName deckName, List<Card> cards) {
+public record Deck(DeckName name, List<String> cards) {
 
     public static Deck from(DeckTO deck) {
-        return new Deck(new DeckName(deck.deckName()), deck.cards().stream()
-            .map(Card::new)
-            .toList());
+        return new Deck(new DeckName(deck.deckName()), deck.cards());
     }
 
     public Deck {
-        requireNonNull(deckName);
+        requireNonNull(name);
         requireNonNull(cards);
     }
 
     public boolean exists(Estimate estimate) {
-        return cards.stream().anyMatch(card -> card.value().equals(estimate.value()));
+        return cards.stream().anyMatch(card -> card.equals(estimate.value()));
     }
 
     public int indexOf(Estimate estimate) {
-        return cards.indexOf(new Card(estimate.value()));
+        return cards.indexOf(estimate.value());
     }
 
     public Comparator<Estimate> comparator() {
-        return comparing(estimate -> cards.indexOf(new Card(estimate.value())));
+        return comparing(estimate -> cards.indexOf(estimate.value()));
     }
 
     public DeckTO asDeckTO() {
-        return new DeckTO(deckName.value(), cards.stream().map(Card::value).toList());
+        return new DeckTO(name.value(), cards);
     }
 }
