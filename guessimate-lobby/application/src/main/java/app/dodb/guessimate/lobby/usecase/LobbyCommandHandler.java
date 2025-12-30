@@ -91,7 +91,7 @@ public class LobbyCommandHandler {
                 case SetUsernameCommand(var username) -> lobby.setUserName(userId, username);
                 case SetEstimateCommand(var estimate) -> lobby.setEstimate(userId, estimate);
                 case ClearEstimateCommand() -> lobby.clearEstimate(userId);
-                case SetDeckCommand(var deckName) -> queryGateway.send(new FindDeckByNameQuery(deckName)).ifPresent(lobby::setDeck);
+                case SetDeckCommand(var name) -> queryGateway.send(new FindDeckByNameQuery(name)).ifPresent(lobby::setDeck);
                 case SetAutoRevealCommand(var enabled) -> lobby.setAutoReveal(enabled);
                 case SetAutoJoinCommand(var role) -> lobby.setAutoJoin(role);
                 case SetTimerDurationCommand(var timerDuration) -> lobby.setTimerDuration(timerDuration, now);

@@ -5,5 +5,5 @@ import app.dodb.smd.api.query.Query;
 
 import java.util.Optional;
 
-public record FindDeckByNameQuery(String deckName) implements Query<Optional<DeckTO>> {
+public record FindDeckByNameQuery(String name) implements Query<Optional<DeckTO>> {
 }

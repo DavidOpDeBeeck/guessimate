@@ -296,10 +296,10 @@ export class SessionStore {
     this.connection()?.send(command);
   }
 
-  setDeck(deckName: string): void {
+  setDeck(name: string): void {
     const command: SetDeckCommand = {
       type: "SetDeckCommand",
-      deckName
+      name
     };
     this.connection()?.send(command);
   }

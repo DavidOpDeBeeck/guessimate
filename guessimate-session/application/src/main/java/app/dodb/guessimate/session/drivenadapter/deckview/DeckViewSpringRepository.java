@@ -30,7 +30,7 @@ public interface DeckViewSpringRepository extends JpaRepository<DeckView, Long>,
 
     @Override
     default Optional<DeckTO> find(FindDeckByNameQuery query) {
-        return findByName(query.deckName())
+        return findByName(query.name())
             .map(DeckView::toTO);
     }
 

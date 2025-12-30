@@ -18,8 +18,8 @@ public class SessionApiTestConstants {
     public static final String ANOTHER_ESTIMATE_VALUE = "2";
     public static final String ESTIMATE_NOT_IN_DECK_VALUE = "3";
 
-    public static final String DECK_NAME_VALUE = "deck";
-    public static final String ANOTHER_DECK_NAME_VALUE = "another-deck";
+    public static final String DECK_NAME = "deck";
+    public static final String ANOTHER_DECK_NAME = "another-deck";
     public static final String NON_EXISTENT_DECK_NAME_VALUE = "non-existent-deck";
 
     public static EstimationTO anEstimationTO() {
@@ -27,10 +27,10 @@ public class SessionApiTestConstants {
     }
 
     public static DeckTO aDeckTO() {
-        return new DeckTO(DECK_NAME_VALUE, List.of("1", "2"));
+        return new DeckTO(DECK_NAME, List.of("1", "2"));
     }
 
     public static DeckTO anotherDeckTO() {
-        return new DeckTO(ANOTHER_DECK_NAME_VALUE, List.of("S", "M", "L"));
+        return new DeckTO(ANOTHER_DECK_NAME, List.of("S", "M", "L"));
     }
 }

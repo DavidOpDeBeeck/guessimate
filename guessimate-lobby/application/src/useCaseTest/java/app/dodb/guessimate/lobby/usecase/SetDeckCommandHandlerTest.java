@@ -16,8 +16,8 @@ import java.util.Optional;
 import static app.dodb.guessimate.lobby.api.LobbyApiTestConstants.USERNAME_VALUE;
 import static app.dodb.guessimate.lobby.api.LobbyApiTestConstants.USER_ID_VALUE;
 import static app.dodb.guessimate.lobby.api.event.UserRole.ESTIMATOR;
-import static app.dodb.guessimate.session.api.SessionApiTestConstants.ANOTHER_DECK_NAME_VALUE;
-import static app.dodb.guessimate.session.api.SessionApiTestConstants.DECK_NAME_VALUE;
+import static app.dodb.guessimate.session.api.SessionApiTestConstants.ANOTHER_DECK_NAME;
+import static app.dodb.guessimate.session.api.SessionApiTestConstants.DECK_NAME;
 import static app.dodb.guessimate.session.api.SessionApiTestConstants.ESTIMATE_VALUE;
 import static app.dodb.guessimate.session.api.SessionApiTestConstants.NON_EXISTENT_DECK_NAME_VALUE;
 import static app.dodb.guessimate.session.api.SessionApiTestConstants.SESSION_ID_VALUE;
@@ -30,8 +30,8 @@ class SetDeckCommandHandlerTest extends CommandHandlerTestBase {
 
     @BeforeEach
     void setUp() {
-        smd.stubQuery(new FindDeckByNameQuery(DECK_NAME_VALUE), Optional.of(aDeckTO()));
-        smd.stubQuery(new FindDeckByNameQuery(ANOTHER_DECK_NAME_VALUE), Optional.of(anotherDeckTO()));
+        smd.stubQuery(new FindDeckByNameQuery(DECK_NAME), Optional.of(aDeckTO()));
+        smd.stubQuery(new FindDeckByNameQuery(ANOTHER_DECK_NAME), Optional.of(anotherDeckTO()));
         smd.stubQuery(new FindDeckByNameQuery(NON_EXISTENT_DECK_NAME_VALUE), Optional.empty());
     }
 
@@ -41,7 +41,7 @@ class SetDeckCommandHandlerTest extends CommandHandlerTestBase {
             new UserConnectedEvent(SESSION_ID_VALUE, USER_ID_VALUE, USERNAME_VALUE)
         );
 
-        send(new SetDeckCommand(ANOTHER_DECK_NAME_VALUE));
+        send(new SetDeckCommand(ANOTHER_DECK_NAME));
 
         assertThat(smd.getEvents())
             .containsExactly(new DeckSetEvent(SESSION_ID_VALUE, anotherDeckTO()));
@@ -53,7 +53,7 @@ class SetDeckCommandHandlerTest extends CommandHandlerTestBase {
             new UserConnectedEvent(SESSION_ID_VALUE, USER_ID_VALUE, USERNAME_VALUE)
         );
 
-        send(new SetDeckCommand(DECK_NAME_VALUE));
+        send(new SetDeckCommand(DECK_NAME));
 
         assertThat(smd.getEvents()).isEmpty();
     }
@@ -66,7 +66,7 @@ class SetDeckCommandHandlerTest extends CommandHandlerTestBase {
             new EstimateSetEvent(SESSION_ID_VALUE, USER_ID_VALUE, ESTIMATE_VALUE)
         );
 
-        send(new SetDeckCommand(ANOTHER_DECK_NAME_VALUE));
+        send(new SetDeckCommand(ANOTHER_DECK_NAME));
 
         assertThat(smd.getEvents())
             .containsExactly(

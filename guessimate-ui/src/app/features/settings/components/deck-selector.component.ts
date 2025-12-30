@@ -21,15 +21,15 @@ import {toSignal} from '@angular/core/rxjs-interop';
         </div>
       </div>
       <div class="grid grid-cols-2 gap-1 p-1 bg-surface-200 dark:bg-gray-800 rounded-md">
-        @for (deck of decks(); track deck.deckName) {
-          <button (click)="setDeck.emit(deck.deckName)"
-                  [class]="deck.deckName === currentDeck().deckName
+        @for (deck of decks(); track deck.name) {
+          <button (click)="setDeck.emit(deck.name)"
+                  [class]="deck.name === currentDeck().name
                     ? 'flex flex-col items-center gap-1.5 px-2 py-2 rounded bg-surface-50 dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm cursor-pointer'
                     : 'flex flex-col items-center gap-1.5 px-2 py-2 rounded text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer'">
-            <span class="text-xs font-semibold">{{ deck.deckName }}</span>
+            <span class="text-xs font-semibold">{{ deck.name }}</span>
             <div class="flex gap-1 flex-wrap justify-center">
               @for (card of deck.cards; track card) {
-                <span [class]="deck.deckName === currentDeck().deckName
+                <span [class]="deck.name === currentDeck().name
                     ? 'px-1.5 py-0.5 text-[10px] font-medium rounded bg-surface-200 dark:bg-gray-600 text-gray-900 dark:text-white border border-surface-300 dark:border-gray-500'
                     : 'px-1.5 py-0.5 text-[10px] font-medium rounded bg-surface-50 dark:bg-gray-700 border border-surface-300 dark:border-gray-600'">
                     {{ card }}

@@ -22,7 +22,7 @@ class FindAllDecksQueryIntegrationTest {
         var actual = queryBus.send(new FindAllDecksQuery());
 
         assertThat(actual)
-            .extracting(DeckTO::deckName)
+            .extracting(DeckTO::name)
             .containsExactly(
                 "Modified Fibonacci",
                 "Fibonacci",

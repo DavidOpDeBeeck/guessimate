@@ -5,7 +5,7 @@ export type Session = {
 }
 
 export type Deck = {
-  deckName: string;
+  name: string;
   cards: string[];
 }
 
@@ -60,7 +60,7 @@ export type ClearEstimateCommand = WebsocketMessage<'ClearEstimateCommand', {}>;
 export type StartEstimationCommand = WebsocketMessage<'StartEstimationCommand', {}>;
 export type CompleteEstimationCommand = WebsocketMessage<'CompleteEstimationCommand', {}>;
 export type SetUsernameCommand = WebsocketMessage<'SetUsernameCommand', { username: string; }>;
-export type SetDeckCommand = WebsocketMessage<'SetDeckCommand', { deckName: string; }>;
+export type SetDeckCommand = WebsocketMessage<'SetDeckCommand', { name: string; }>;
 export type SetAutoRevealCommand = WebsocketMessage<'SetAutoRevealCommand', { enabled: boolean; }>;
 export type SetAutoJoinCommand = WebsocketMessage<'SetAutoJoinCommand', { role: UserRole | null; }>;
 export type SetTimerDurationCommand = WebsocketMessage<'SetTimerDurationCommand', { timerDuration: TimerDuration; }>;

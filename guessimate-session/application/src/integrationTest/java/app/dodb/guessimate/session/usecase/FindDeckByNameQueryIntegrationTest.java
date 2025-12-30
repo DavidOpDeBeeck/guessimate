@@ -19,7 +19,7 @@ class FindDeckByNameQueryIntegrationTest {
         var actual = queryBus.send(new FindDeckByNameQuery("T-shirt"));
 
         assertThat(actual).isPresent();
-        assertThat(actual.get().deckName()).isEqualTo("T-shirt");
+        assertThat(actual.get().name()).isEqualTo("T-shirt");
         assertThat(actual.get().cards()).containsExactly("XS", "S", "M", "L", "XL", "XXL");
     }
 

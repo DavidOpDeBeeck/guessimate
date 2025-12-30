@@ -9,10 +9,10 @@ import java.util.List;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
 
-public record Deck(DeckName name, List<String> cards) {
+public record Deck(String name, List<String> cards) {
 
     public static Deck from(DeckTO deck) {
-        return new Deck(new DeckName(deck.deckName()), deck.cards());
+        return new Deck(deck.name(), deck.cards());
     }
 
     public Deck {
@@ -33,6 +33,6 @@ public record Deck(DeckName name, List<String> cards) {
     }
 
     public DeckTO asDeckTO() {
-        return new DeckTO(name.value(), cards);
+        return new DeckTO(name, cards);
     }
 }

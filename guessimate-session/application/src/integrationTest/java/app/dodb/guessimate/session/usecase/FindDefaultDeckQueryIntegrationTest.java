@@ -18,7 +18,7 @@ class FindDefaultDeckQueryIntegrationTest {
     void findDefaultDeck_returnsModifiedFibonacci() {
         var actual = queryBus.send(new FindDefaultDeckQuery());
 
-        assertThat(actual.deckName()).isEqualTo("Modified Fibonacci");
+        assertThat(actual.name()).isEqualTo("Modified Fibonacci");
         assertThat(actual.cards()).containsExactly("0", "0.5", "1", "2", "3", "5", "8", "13");
     }
 }

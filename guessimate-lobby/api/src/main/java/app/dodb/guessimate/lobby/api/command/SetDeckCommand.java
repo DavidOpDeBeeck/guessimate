@@ -1,5 +1,5 @@
 package app.dodb.guessimate.lobby.api.command;
 
-public record SetDeckCommand(String deckName) implements WebSocketCommand {
+public record SetDeckCommand(String name) implements WebSocketCommand {
 }
 
