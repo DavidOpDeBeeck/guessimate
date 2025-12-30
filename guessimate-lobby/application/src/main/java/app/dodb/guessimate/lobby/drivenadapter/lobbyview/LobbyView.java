@@ -8,6 +8,7 @@ import app.dodb.guessimate.lobby.api.event.EstimateClearedEvent;
 import app.dodb.guessimate.lobby.api.event.EstimateSetEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationCompletedEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationStartedEvent;
+import app.dodb.guessimate.lobby.api.event.LobbyCreatedEvent;
 import app.dodb.guessimate.lobby.api.event.LobbyStatus;
 import app.dodb.guessimate.lobby.api.event.ReactionClearedEvent;
 import app.dodb.guessimate.lobby.api.event.ReactionSetEvent;
@@ -121,6 +122,10 @@ public class LobbyView implements Serializable {
 
     void apply(ReactionClearedEvent event) {
         data.apply(event);
+    }
+
+    void apply(LobbyCreatedEvent event) {
+        // View is created by event handler, nothing to apply
     }
 
     public String getSessionId() {

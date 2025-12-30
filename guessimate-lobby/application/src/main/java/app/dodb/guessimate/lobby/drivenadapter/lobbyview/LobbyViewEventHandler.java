@@ -8,6 +8,7 @@ import app.dodb.guessimate.lobby.api.event.EstimateClearedEvent;
 import app.dodb.guessimate.lobby.api.event.EstimateSetEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationCompletedEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationStartedEvent;
+import app.dodb.guessimate.lobby.api.event.LobbyCreatedEvent;
 import app.dodb.guessimate.lobby.api.event.LobbyStatus;
 import app.dodb.guessimate.lobby.api.event.ReactionClearedEvent;
 import app.dodb.guessimate.lobby.api.event.ReactionSetEvent;
@@ -19,7 +20,6 @@ import app.dodb.guessimate.lobby.api.event.UserConnectedEvent;
 import app.dodb.guessimate.lobby.api.event.UserDisconnectedEvent;
 import app.dodb.guessimate.lobby.api.event.UserRoleSetEvent;
 import app.dodb.guessimate.lobby.api.event.UsernameSetEvent;
-import app.dodb.guessimate.session.api.event.SessionCreatedEvent;
 import app.dodb.guessimate.session.api.query.FindDefaultDeckQuery;
 import app.dodb.smd.api.event.EventHandler;
 import app.dodb.smd.api.event.ProcessingGroup;
@@ -30,18 +30,18 @@ import java.util.ArrayList;
 
 @Component
 @ProcessingGroup("lobby_view")
-public class LobbyEventHandler {
+public class LobbyViewEventHandler {
 
     private final QueryGateway queryGateway;
     private final LobbyViewSpringRepository repository;
 
-    public LobbyEventHandler(QueryGateway queryGateway, LobbyViewSpringRepository repository) {
+    public LobbyViewEventHandler(QueryGateway queryGateway, LobbyViewSpringRepository repository) {
         this.queryGateway = queryGateway;
         this.repository = repository;
     }
 
     @EventHandler
-    public void on(SessionCreatedEvent event) {
+    public void on(LobbyCreatedEvent event) {
         repository.save(new LobbyView(
             event.sessionId(),
             new LobbyData.Builder()

@@ -29,7 +29,7 @@ import static com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator.V
 public class GuessimateLobbyDrivingAdapterConfiguration {
 
     @Bean
-    public ProcessingGroupsConfigurer lobbyEndpointProcessingGroup() {
+    public ProcessingGroupsConfigurer drivingAdapterProcessingGroups() {
         return spec -> spec
             .processingGroup("estimation_timer_process_manager").sync();
     }

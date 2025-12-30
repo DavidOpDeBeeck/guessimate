@@ -18,7 +18,7 @@ import static java.util.concurrent.Executors.newSingleThreadExecutor;
 public class GuessimateLobbyDrivenAdapterConfiguration {
 
     @Bean
-    public ProcessingGroupsConfigurer lobbyViewProcessingGroup() {
+    public ProcessingGroupsConfigurer drivenAdapterProcessingGroups() {
         return spec -> spec
             .processingGroup("lobby_view").sync()
             .processingGroup("lobby_metrics_view").sync()

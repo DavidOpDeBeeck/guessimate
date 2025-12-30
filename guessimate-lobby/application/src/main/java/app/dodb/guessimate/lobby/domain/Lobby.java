@@ -11,6 +11,7 @@ import app.dodb.guessimate.lobby.api.event.EstimateSetEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationCompletedEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationStartedEvent;
 import app.dodb.guessimate.lobby.api.event.KeepAliveEvent;
+import app.dodb.guessimate.lobby.api.event.LobbyCreatedEvent;
 import app.dodb.guessimate.lobby.api.event.LobbyEvent;
 import app.dodb.guessimate.lobby.api.event.ReactionClearedEvent;
 import app.dodb.guessimate.lobby.api.event.ReactionSetEvent;
@@ -48,6 +49,22 @@ public class Lobby {
 
     public Lobby(LobbyState state) {
         this.state = requireNonNull(state);
+    }
+
+    public Lobby(SessionId sessionId, DeckTO deck) {
+        this(new LobbyState(
+            sessionId,
+            deck,
+            false,
+            null,
+            TimerDuration.DISABLED,
+            false,
+            null,
+            null,
+            ESTIMATING,
+            new ArrayList<>()
+        ));
+        record(new LobbyCreatedEvent(sessionId.value()));
     }
 
     public void connect(UserId userId, String username) {

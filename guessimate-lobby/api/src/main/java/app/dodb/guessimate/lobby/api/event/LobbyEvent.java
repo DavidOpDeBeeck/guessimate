@@ -20,7 +20,8 @@ public sealed interface LobbyEvent extends Event
     UserDisconnectedEvent,
     UserRoleSetEvent,
     UsernameSetEvent,
-    KeepAliveEvent {
+    KeepAliveEvent,
+    LobbyCreatedEvent {
 
     String sessionId();
 }

@@ -9,6 +9,7 @@ import app.dodb.guessimate.lobby.api.event.EstimateSetEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationCompletedEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationStartedEvent;
 import app.dodb.guessimate.lobby.api.event.KeepAliveEvent;
+import app.dodb.guessimate.lobby.api.event.LobbyCreatedEvent;
 import app.dodb.guessimate.lobby.api.event.LobbyEvent;
 import app.dodb.guessimate.lobby.api.event.LobbyStatus;
 import app.dodb.guessimate.lobby.api.event.ReactionClearedEvent;
@@ -150,6 +151,10 @@ public class LobbyState {
         // do nothing for now
     }
 
+    void apply(LobbyCreatedEvent event) {
+        // State is already initialized in constructor
+    }
+
     public void apply(LobbyEvent event) {
         switch (event) {
             case UserConnectedEvent e -> apply(e);
@@ -170,6 +175,7 @@ public class LobbyState {
             case ReactionSetEvent e -> apply(e);
             case ReactionClearedEvent e -> apply(e);
             case KeepAliveEvent e -> apply(e);
+            case LobbyCreatedEvent e -> apply(e);
         }
     }
 

@@ -8,13 +8,13 @@ import app.dodb.guessimate.lobby.api.event.EstimateClearedEvent;
 import app.dodb.guessimate.lobby.api.event.EstimateSetEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationCompletedEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationStartedEvent;
+import app.dodb.guessimate.lobby.api.event.LobbyCreatedEvent;
 import app.dodb.guessimate.lobby.api.event.ReactionsDisabledEvent;
 import app.dodb.guessimate.lobby.api.event.ReactionsEnabledEvent;
 import app.dodb.guessimate.lobby.api.event.TimerDurationSetEvent;
 import app.dodb.guessimate.lobby.api.event.UserConnectedEvent;
 import app.dodb.guessimate.lobby.api.event.UserDisconnectedEvent;
 import app.dodb.guessimate.lobby.api.event.UserRoleSetEvent;
-import app.dodb.guessimate.session.api.event.SessionCreatedEvent;
 import app.dodb.smd.api.event.EventHandler;
 import app.dodb.smd.api.event.ProcessingGroup;
 import org.springframework.stereotype.Component;
@@ -32,7 +32,7 @@ public class LobbyMetricsViewEventHandler {
     }
 
     @EventHandler
-    public void on(SessionCreatedEvent event) {
+    public void on(LobbyCreatedEvent event) {
         repository.save(new LobbyMetricsView(event.sessionId(), Instant.now()));
     }
 

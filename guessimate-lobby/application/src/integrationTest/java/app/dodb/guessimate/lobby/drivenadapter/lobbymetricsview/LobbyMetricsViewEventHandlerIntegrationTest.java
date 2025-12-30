@@ -8,12 +8,12 @@ import app.dodb.guessimate.lobby.api.event.EstimateClearedEvent;
 import app.dodb.guessimate.lobby.api.event.EstimateSetEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationCompletedEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationStartedEvent;
+import app.dodb.guessimate.lobby.api.event.LobbyCreatedEvent;
 import app.dodb.guessimate.lobby.api.event.ReactionsEnabledEvent;
 import app.dodb.guessimate.lobby.api.event.TimerDurationSetEvent;
 import app.dodb.guessimate.lobby.api.event.UserConnectedEvent;
 import app.dodb.guessimate.lobby.api.event.UserDisconnectedEvent;
 import app.dodb.guessimate.lobby.api.event.UserRoleSetEvent;
-import app.dodb.guessimate.session.api.event.SessionCreatedEvent;
 import app.dodb.smd.api.event.bus.EventBus;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -43,8 +43,8 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
     LobbyMetricsViewSpringRepository repository;
 
     @Test
-    void onSessionCreatedEvent_createsMetricsView() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+    void onLobbyCreatedEvent_createsMetricsView() {
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
 
         var actual = repository.findById(SESSION_ID_VALUE).orElse(null);
 
@@ -58,7 +58,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onUserConnectedEvent_incrementsConnectedUserCount() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
         var lastActivityBefore = repository.findById(SESSION_ID_VALUE).orElseThrow().getLastActivity();
 
         eventBus.publish(new UserConnectedEvent(SESSION_ID_VALUE, USER_ID_VALUE, USERNAME_VALUE));
@@ -72,7 +72,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onMultipleUserConnectedEvents_incrementsConnectedUserCount() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
         eventBus.publish(new UserConnectedEvent(SESSION_ID_VALUE, USER_ID_VALUE, USERNAME_VALUE));
         eventBus.publish(new UserConnectedEvent(SESSION_ID_VALUE, ANOTHER_USER_ID_VALUE, ANOTHER_USERNAME_VALUE));
 
@@ -84,7 +84,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onUserDisconnectedEvent_decrementsConnectedUserCount() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
         eventBus.publish(new UserConnectedEvent(SESSION_ID_VALUE, USER_ID_VALUE, USERNAME_VALUE));
         eventBus.publish(new UserConnectedEvent(SESSION_ID_VALUE, ANOTHER_USER_ID_VALUE, ANOTHER_USERNAME_VALUE));
 
@@ -98,7 +98,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onEstimationStartedEvent_setsStatusToEstimating() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
 
         eventBus.publish(new EstimationStartedEvent(SESSION_ID_VALUE, Instant.now().plusSeconds(30)));
 
@@ -110,7 +110,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onEstimationCompletedEvent_setsStatusToCompletedAndIncrementsCounter() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
 
         eventBus.publish(new EstimationCompletedEvent(SESSION_ID_VALUE, "estimation-1", List.of("1", "2")));
 
@@ -123,7 +123,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onMultipleEstimationCompletedEvents_incrementsCounter() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
 
         eventBus.publish(new EstimationCompletedEvent(SESSION_ID_VALUE, "estimation-1", List.of("1")));
         eventBus.publish(new EstimationStartedEvent(SESSION_ID_VALUE, null));
@@ -139,7 +139,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onEstimateSetEvent_updatesLastActivity() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
         var lastActivityBefore = repository.findById(SESSION_ID_VALUE).orElseThrow().getLastActivity();
 
         eventBus.publish(new EstimateSetEvent(SESSION_ID_VALUE, USER_ID_VALUE, ESTIMATE_VALUE));
@@ -152,7 +152,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onEstimateClearedEvent_updatesLastActivity() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
         var lastActivityBefore = repository.findById(SESSION_ID_VALUE).orElseThrow().getLastActivity();
 
         eventBus.publish(new EstimateClearedEvent(SESSION_ID_VALUE, USER_ID_VALUE));
@@ -165,7 +165,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onDeckSetEvent_updatesLastActivity() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
         var lastActivityBefore = repository.findById(SESSION_ID_VALUE).orElseThrow().getLastActivity();
 
         eventBus.publish(new DeckSetEvent(SESSION_ID_VALUE, aDeckTO()));
@@ -178,7 +178,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onAutoRevealEnabledEvent_updatesLastActivity() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
         var lastActivityBefore = repository.findById(SESSION_ID_VALUE).orElseThrow().getLastActivity();
 
         eventBus.publish(new AutoRevealEnabledEvent(SESSION_ID_VALUE));
@@ -191,7 +191,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onAutoJoinUpdatedEvent_updatesLastActivity() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
         var lastActivityBefore = repository.findById(SESSION_ID_VALUE).orElseThrow().getLastActivity();
 
         eventBus.publish(new AutoJoinUpdatedEvent(SESSION_ID_VALUE, ESTIMATOR));
@@ -204,7 +204,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onTimerDurationSetEvent_updatesLastActivity() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
         var lastActivityBefore = repository.findById(SESSION_ID_VALUE).orElseThrow().getLastActivity();
 
         eventBus.publish(new TimerDurationSetEvent(SESSION_ID_VALUE, THIRTY_SECONDS));
@@ -217,7 +217,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onReactionsEnabledEvent_updatesLastActivity() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
         var lastActivityBefore = repository.findById(SESSION_ID_VALUE).orElseThrow().getLastActivity();
 
         eventBus.publish(new ReactionsEnabledEvent(SESSION_ID_VALUE));
@@ -230,7 +230,7 @@ class LobbyMetricsViewEventHandlerIntegrationTest {
 
     @Test
     void onUserRoleSetEvent_updatesLastActivity() {
-        eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
+        eventBus.publish(new LobbyCreatedEvent(SESSION_ID_VALUE));
         var lastActivityBefore = repository.findById(SESSION_ID_VALUE).orElseThrow().getLastActivity();
 
         eventBus.publish(new UserRoleSetEvent(SESSION_ID_VALUE, USER_ID_VALUE, ESTIMATOR));
