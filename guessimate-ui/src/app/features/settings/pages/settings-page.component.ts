@@ -28,7 +28,7 @@ import {SessionStore} from '../../session/services/session.store';
             </svg>
             <h2 class="text-2xl font-semibold leading-none text-gray-900 dark:text-white">Settings</h2>
           </div>
-          <span class="text-sm font-normal text-gray-600 dark:text-gray-400">Manage the session configuration.</span>
+          <span class="text-sm font-normal text-gray-600 dark:text-gray-400">Manage the lobby configuration.</span>
         </div>
         <app-auto-join-selector [lobby]="store.lobby()!" (setAutoJoin)="store.setAutoJoin($event)"/>
         <app-auto-reveal-selector [lobby]="store.lobby()!" (setAutoReveal)="store.setAutoReveal($event)"/>

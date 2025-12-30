@@ -2,7 +2,7 @@ import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
 import {filter, map} from 'rxjs';
 import {EstimationLifecycleComponent} from '../../estimation/components/estimation-lifecycle.component';
-import {WebSocketOverlayComponent, WebSocketStatusIndicatorComponent} from '../../../websocket';
+import {WebSocketOverlayComponent} from '../../../websocket';
 import {EstimationCardsComponent} from '../../estimation/components/estimation-cards.component';
 import {NavigationComponent} from '../../../layout/navigation/navigation.component';
 import {SessionStore} from '../services/session.store';
@@ -14,7 +14,6 @@ import {SessionStore} from '../services/session.store';
     RouterOutlet,
     EstimationLifecycleComponent,
     WebSocketOverlayComponent,
-    WebSocketStatusIndicatorComponent,
     EstimationCardsComponent
   ],
   providers: [SessionStore],
@@ -27,12 +26,8 @@ import {SessionStore} from '../services/session.store';
           <app-web-socket-overlay [connection]="store.connection()">
             <div class="flex flex-col-reverse md:flex-row items-start justify-center gap-4 px-4">
               @if (store.lobby()) {
-                <div class="w-full flex-1 flex flex-col">
+                <div class="w-full flex-1">
                   <router-outlet/>
-                  <div class="flex justify-between items-center mt-4">
-                    <span class="text-sm font-normal text-gray-600 dark:text-gray-400 italic">Session ID: {{ store.lobby()!.sessionId }}</span>
-                    <app-web-socket-status-indicator [connection]="store.connection()"/>
-                  </div>
                 </div>
                 <div class="w-full md:w-88 flex flex-col gap-4">
                   <app-estimation-lifecycle
