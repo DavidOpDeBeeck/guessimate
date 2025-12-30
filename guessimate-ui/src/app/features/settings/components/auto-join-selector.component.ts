@@ -17,7 +17,7 @@ import {LobbyInfo, UserRole} from '../../session/models/session.model';
         </div>
         <div class="flex flex-col">
           <span class="text-sm font-medium text-gray-900 dark:text-white">Auto Join</span>
-          <span class="text-xs text-gray-500 dark:text-gray-400">Automatically join with role</span>
+          <span class="text-xs text-gray-500 dark:text-gray-400">Assign role automatically on join</span>
         </div>
       </div>
       <div class="inline-flex rounded-md bg-surface-200 dark:bg-gray-800 p-0.5 shrink-0">

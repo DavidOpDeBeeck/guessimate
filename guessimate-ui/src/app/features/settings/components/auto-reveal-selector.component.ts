@@ -16,7 +16,7 @@ import {FormsModule} from '@angular/forms';
         </div>
         <div class="flex flex-col">
           <span class="text-sm font-medium text-gray-900 dark:text-white">Auto Reveal</span>
-          <span class="text-xs text-gray-500 dark:text-gray-400">Reveal when all voted</span>
+          <span class="text-xs text-gray-500 dark:text-gray-400">Reveal when all have voted</span>
         </div>
       </div>
       <div class="inline-flex rounded-md bg-surface-200 dark:bg-gray-800 p-0.5 shrink-0">

@@ -15,7 +15,7 @@ import {NgClass} from '@angular/common';
           </svg>
         </div>
         <div class="flex flex-col">
-          <span class="text-sm font-medium text-gray-900 dark:text-white">Timer</span>
+          <span class="text-sm font-medium text-gray-900 dark:text-white">Reveal Timer</span>
           <span class="text-xs text-gray-500 dark:text-gray-400">Reveal when time expires</span>
         </div>
       </div>
