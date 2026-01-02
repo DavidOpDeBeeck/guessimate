@@ -1,9 +1,10 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {LobbyInfo, UserInfo} from '../../../session/models/session.model';
+import {InlineUsernameComponent} from '../inline-username.component';
 
 @Component({
   selector: 'app-estimator-detail',
-  imports: [],
+  imports: [InlineUsernameComponent],
   template: `
     <div class="flex items-center justify-between gap-4 py-3 px-4">
       <div class="flex items-center gap-3 min-w-0">
@@ -13,11 +14,13 @@ import {LobbyInfo, UserInfo} from '../../../session/models/session.model';
                   d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
           </svg>
         </div>
-        <span class="font-medium text-sm truncate" [class]="nameClasses()">
-          {{ user().username || user().userId }}
-        </span>
+        <app-inline-username
+          [username]="user().username"
+          [editable]="user().self"
+          [highlighted]="user().self"
+          (setUsername)="setUsername.emit($event)"
+        />
       </div>
-
       <div class="flex items-center gap-3 shrink-0">
         @if (lobby().status == "ESTIMATION_COMPLETED") {
           <span class="font-mono text-lg font-semibold"
@@ -52,6 +55,7 @@ export class EstimatorDetailComponent {
 
   lobby = input.required<LobbyInfo>();
   user = input.required<UserInfo>();
+  setUsername = output<string>();
 
   iconContainerClasses = computed(() => {
     if (this.user().self) {
@@ -59,12 +63,4 @@ export class EstimatorDetailComponent {
     }
     return 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400';
   });
-
-  nameClasses = computed(() => {
-    if (this.user().self) {
-      return 'text-brand-500 dark:text-brand-400';
-    }
-    return 'text-gray-600 dark:text-gray-400';
-  });
-
 }

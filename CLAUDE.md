@@ -631,3 +631,41 @@ public class MyHandler {
 5. **Use records** for all immutable data structures
 6. **Follow hexagonal boundaries** - domain must not depend on frameworks
 7. **Constructor injection only** - no field or setter injection
+
+---
+
+## AI Assistant Workflow
+
+### Feature Planning
+
+When the user asks to **plan a feature**, follow this workflow:
+
+1. **Enter plan mode** using `EnterPlanMode` tool
+2. **Explore the codebase** to understand existing patterns and identify files to modify
+3. **Ask clarifying questions** using `AskUserQuestion` if needed
+4. **Design the implementation approach**
+5. **Exit plan mode** and implement
+
+### Feature Plan Documentation
+
+**ALWAYS create a markdown file** in `.claude/plans/` after implementing a feature:
+
+- **Filename**: `<feature-name>.md` (kebab-case)
+- **Contents**:
+  - Feature overview
+  - Status (Completed/In Progress)
+  - Files created/modified with paths
+  - Implementation details
+  - UI behavior (for frontend features)
+  - Data flow (if applicable)
+  - Testing notes
+
+This documents what was built for future reference.
+
+### UI Style Guide
+
+**Use `/ui-style-guide` skill** when:
+- Writing or reviewing frontend code
+- Creating new Angular components
+- Styling with TailwindCSS
+- Following component patterns

@@ -1,9 +1,10 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {UserInfo} from '../../../session/models/session.model';
+import {InlineUsernameComponent} from '../inline-username.component';
 
 @Component({
   selector: 'app-observer-detail',
-  imports: [],
+  imports: [InlineUsernameComponent],
   template: `
     <div class="flex items-center justify-between gap-4 py-3 px-4">
       <div class="flex items-center gap-3 min-w-0">
@@ -14,9 +15,12 @@ import {UserInfo} from '../../../session/models/session.model';
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
           </svg>
         </div>
-        <span class="font-medium text-sm truncate" [class]="nameClasses()">
-          {{ user().username || user().userId }}
-        </span>
+        <app-inline-username
+          [username]="user().username"
+          [editable]="user().self"
+          [highlighted]="user().self"
+          (setUsername)="setUsername.emit($event)"
+        />
       </div>
     </div>
   `
@@ -24,6 +28,7 @@ import {UserInfo} from '../../../session/models/session.model';
 export class ObserverDetailComponent {
 
   user = input.required<UserInfo>();
+  setUsername = output<string>();
 
   iconContainerClasses = computed(() => {
     if (this.user().self) {
@@ -31,12 +36,4 @@ export class ObserverDetailComponent {
     }
     return 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400';
   });
-
-  nameClasses = computed(() => {
-    if (this.user().self) {
-      return 'text-brand-500 dark:text-brand-400';
-    }
-    return 'text-gray-600 dark:text-gray-400';
-  });
-
 }

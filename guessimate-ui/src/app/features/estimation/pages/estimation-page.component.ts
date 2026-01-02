@@ -12,8 +12,8 @@ import {SessionStore} from '../../session/services/session.store';
   standalone: true,
   template: `
     <div class="flex-1 flex flex-col gap-4">
-      <app-estimator-overview [lobby]="store.lobby()!" (setUserRole)="store.setUserRole($event)"/>
-      <app-observer-overview [lobby]="store.lobby()!" (setUserRole)="store.setUserRole($event)"/>
+      <app-estimator-overview [lobby]="store.lobby()!" (setUserRole)="store.setUserRole($event)" (setUsername)="store.setUsername($event)"/>
+      <app-observer-overview [lobby]="store.lobby()!" (setUserRole)="store.setUserRole($event)" (setUsername)="store.setUsername($event)"/>
     </div>
   `
 })

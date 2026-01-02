@@ -21,13 +21,13 @@ import {LobbyInfo, UserRole} from '../../../session/models/session.model';
           </div>
           <span class="text-sm font-normal text-gray-600 dark:text-gray-400">Participants who can watch but not vote</span>
         </div>
-        <div class="flex items-center justify-center p-2 bg-surface-200 dark:bg-gray-800 rounded-lg shrink-0 min-w-[2.5rem]">
+        <div class="flex items-center justify-center p-2 bg-surface-200 dark:bg-gray-800 rounded-lg shrink-0 min-w-10">
           <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 leading-none">{{ observers().length }}</span>
         </div>
       </div>
       <div class="flex flex-col divide-y divide-surface-200 dark:divide-gray-800">
         @for (observer of observers(); track observer.userId) {
-          <app-observer-detail [user]="observer"/>
+          <app-observer-detail [user]="observer" (setUsername)="setUsername.emit($event)"/>
         }
         @if (!isObserver()) {
           <button (click)="setUserRole.emit('OBSERVER')"
@@ -51,6 +51,7 @@ export class ObserverOverviewComponent {
 
   lobby = input.required<LobbyInfo>();
   setUserRole = output<UserRole>();
+  setUsername = output<string>();
 
   isObserver = computed(() => this.lobby().users.find(user => user.self)?.role === 'OBSERVER');
 

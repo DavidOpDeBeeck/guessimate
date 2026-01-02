@@ -23,17 +23,20 @@ import {FormsModule} from '@angular/forms';
         </div>
       </div>
       <div>
-        <label for="displayName" class="sr-only">Display Name</label>
-        <input type="text" name="displayName" id="displayName"
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" name="username" id="username"
                [maxLength]="16"
-               [(ngModel)]="username"
+               [(ngModel)]="localUsername"
                (blur)="save()"
-               (keydown.enter)="onEnter($event)"
+               (keydown.enter)="usernameInput.blur()"
+               (keydown.escape)="usernameInput.blur()"
                autocomplete="off"
                data-lpignore="true"
                data-1p-ignore
                class="bg-surface-200 border-none text-gray-900 text-sm rounded-md focus:ring-2 focus:ring-brand-500 block w-full py-2 px-3 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:focus:ring-brand-500"
-               placeholder="Type username" required="true">
+               placeholder="Type username"
+               required="true"
+               #usernameInput>
       </div>
     </div>
   `,
@@ -48,24 +51,21 @@ export class UsernameSelectorComponent {
   setUsername = output<string>();
 
   currentUser = computed<UserInfo | null>(() => (this.lobby()?.users || []).find(user => user.self) ?? null);
-  username = signal<string | undefined>(undefined);
-  isChanged = computed(() => this.username() !== this.currentUser()?.username && this.username() !== '');
+  localUsername = signal<string | undefined>(undefined);
 
   constructor() {
     effect(() => {
-      this.username.set(this.currentUser()?.username);
+      this.localUsername.set(this.currentUser()?.username);
     });
   }
 
-  onEnter(event: Event) {
-    (event.target as HTMLInputElement).blur();
-  }
-
   save() {
-    const newUsername = this.username();
-    if (newUsername && this.isChanged()) {
+    const newUsername = this.localUsername()?.trim();
+    if (newUsername && newUsername !== this.currentUser()?.username) {
       localStorage.setItem("username", newUsername);
       this.setUsername.emit(newUsername);
+    } else {
+      this.localUsername.set(this.currentUser()?.username);
     }
   }
 }

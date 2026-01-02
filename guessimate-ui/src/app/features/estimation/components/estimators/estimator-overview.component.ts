@@ -20,13 +20,13 @@ import {LobbyInfo, UserRole} from '../../../session/models/session.model';
           </div>
           <span class="text-sm font-normal text-gray-600 dark:text-gray-400">Participants who can vote</span>
         </div>
-        <div class="flex items-center justify-center p-2 bg-surface-200 dark:bg-gray-800 rounded-lg shrink-0 min-w-[2.5rem]">
+        <div class="flex items-center justify-center p-2 bg-surface-200 dark:bg-gray-800 rounded-lg shrink-0 min-w-10">
           <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 leading-none">{{ estimators().length }}</span>
         </div>
       </div>
       <div class="flex flex-col divide-y divide-surface-200 dark:divide-gray-800">
         @for (estimator of estimators(); track estimator.userId) {
-          <app-estimator-detail [lobby]="lobby()" [user]="estimator"/>
+          <app-estimator-detail [lobby]="lobby()" [user]="estimator" (setUsername)="setUsername.emit($event)"/>
         }
         @if (!isEstimator()) {
           <button (click)="setUserRole.emit('ESTIMATOR')"
@@ -50,6 +50,7 @@ export class EstimatorOverviewComponent {
 
   lobby = input.required<LobbyInfo>();
   setUserRole = output<UserRole>();
+  setUsername = output<string>();
 
   isEstimator = computed(() => this.lobby().users.find(user => user.self)?.role === 'ESTIMATOR');
 
