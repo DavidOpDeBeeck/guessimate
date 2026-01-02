@@ -3,18 +3,16 @@ import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {Session} from '../../session/models/session.model';
 import {FormsModule} from '@angular/forms';
-import {MetricsSummaryComponent} from '../../metrics/components/metrics-summary.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
   imports: [
-    FormsModule,
-    MetricsSummaryComponent
+    FormsModule
   ],
   template: `
     <div class="w-full h-full flex flex-col justify-center items-center p-4">
-      <div class="flex flex-col items-center text-center">
+      <div class="flex flex-col items-center">
         <h1 class="mb-4 text-6xl font-extrabold leading-none tracking-tight text-gray-900 lg:text-8xl dark:text-white">Guessimate</h1>
         <p class="mb-6 text-lg font-normal text-gray-600 lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400">Estimate together. Decide smarter.</p>
         <button (click)="createSession()"
@@ -25,7 +23,6 @@ import {MetricsSummaryComponent} from '../../metrics/components/metrics-summary.
           </svg>
         </button>
       </div>
-      <app-metrics-summary/>
     </div>
   `
 })

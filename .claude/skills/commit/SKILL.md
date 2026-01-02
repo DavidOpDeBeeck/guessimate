@@ -16,8 +16,10 @@ When this skill is invoked:
 3. Run `git log --oneline -10` to see recent commit style for context
 4. Analyze what was changed and why
 5. Generate a commit message following the format below
-6. Present the commit message to the user for approval
+6. Present the commit message to the user for approval - **keep it concise, just show the message and ask for approval**
 7. If approved, execute the commit
+
+**Presentation Style**: Be direct and minimal. Present only the commit message and ask "Proceed with this commit message?" - no analysis, explanations, or bullet points unless the changes are complex or ambiguous.
 
 ## Commit Message Format
 

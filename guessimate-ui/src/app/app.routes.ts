@@ -6,11 +6,16 @@ import {PreferencesPageComponent} from './features/settings/pages/preferences-pa
 import {HistoryPageComponent} from './features/history/pages/history-page.component';
 import {EstimationPageComponent} from './features/estimation/pages/estimation-page.component';
 import {DebugLogPageComponent} from './features/debug/pages/debug-log-page.component';
+import {MetricsPageComponent} from './features/metrics/pages/metrics-page.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomePageComponent
+  },
+  {
+    path: 'metrics',
+    component: MetricsPageComponent
   },
   {
     path: ':id',
