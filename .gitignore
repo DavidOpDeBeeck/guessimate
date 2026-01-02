@@ -57,7 +57,9 @@ nul
 *.local.yaml
 
 ### AI assistants ###
-.claude/
+.claude/*
+!.claude/skills/
+!.claude/plans/
 .gemini/
 
 ### Git worktrees ###

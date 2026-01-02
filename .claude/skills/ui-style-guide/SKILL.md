@@ -1,3 +1,8 @@
+---
+name: ui-style-guide
+description: Frontend coding standards, component patterns, and design system for the Guessimate Angular UI. Reference when writing or reviewing frontend code.
+---
+
 # Frontend Style Guide & Coding Conventions
 
 This document defines the coding standards, architectural patterns, and design system for the Guessimate Angular frontend.
