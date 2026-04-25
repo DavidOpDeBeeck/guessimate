@@ -11,8 +11,10 @@ import app.dodb.guessimate.lobby.api.event.EstimateSetEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationCompletedEvent;
 import app.dodb.guessimate.lobby.api.event.EstimationStartedEvent;
 import app.dodb.guessimate.lobby.api.event.KeepAliveEvent;
+import app.dodb.guessimate.lobby.api.event.LobbyConfiguration;
 import app.dodb.guessimate.lobby.api.event.LobbyCreatedEvent;
 import app.dodb.guessimate.lobby.api.event.LobbyEvent;
+import app.dodb.guessimate.lobby.api.event.LobbyInfoSetEvent;
 import app.dodb.guessimate.lobby.api.event.ReactionClearedEvent;
 import app.dodb.guessimate.lobby.api.event.ReactionSetEvent;
 import app.dodb.guessimate.lobby.api.event.ReactionsDisabledEvent;
@@ -21,6 +23,7 @@ import app.dodb.guessimate.lobby.api.event.TimerDuration;
 import app.dodb.guessimate.lobby.api.event.TimerDurationSetEvent;
 import app.dodb.guessimate.lobby.api.event.UserConnectedEvent;
 import app.dodb.guessimate.lobby.api.event.UserDisconnectedEvent;
+import app.dodb.guessimate.lobby.api.event.UserInfo;
 import app.dodb.guessimate.lobby.api.event.UserRole;
 import app.dodb.guessimate.lobby.api.event.UserRoleSetEvent;
 import app.dodb.guessimate.lobby.api.event.UsernameSetEvent;
@@ -252,6 +255,36 @@ public class Lobby {
         var copy = new ArrayList<>(events);
         events.clear();
         return copy;
+    }
+
+    public LobbyInfoSetEvent snapshotFor(UserId currentUserId) {
+        return new LobbyInfoSetEvent(
+            state.getSessionId().value(),
+            new LobbyConfiguration(
+                state.getDeck(),
+                state.isAutoReveal(),
+                state.getAutoJoinRole().orElse(null),
+                state.getTimerDuration(),
+                state.isReactionsEnabled()
+            ),
+            state.getPreviousEstimationId()
+                .map(EstimationId::value)
+                .orElse(null),
+            state.getStatus(),
+            state.getUsers().stream()
+                .map(user -> new UserInfo(
+                    user.userId().value(),
+                    user.username(),
+                    user.estimate().orElse(null),
+                    user.reaction().orElse(null),
+                    user.role().orElse(null),
+                    user.userId().equals(currentUserId)
+                ))
+                .toList(),
+            state.getTimerExpiresAt()
+                .map(Instant::toString)
+                .orElse(null)
+        );
     }
 
     private void record(LobbyEvent event) {

@@ -1,5 +1,6 @@
 package app.dodb.guessimate.lobby.usecase;
 
+import app.dodb.guessimate.lobby.api.event.LobbyInfoSetEvent;
 import app.dodb.guessimate.lobby.api.command.CheckLobbyActivityCommand;
 import app.dodb.guessimate.lobby.api.command.ClearEstimateCommand;
 import app.dodb.guessimate.lobby.api.command.CompleteEstimationCommand;
@@ -27,13 +28,13 @@ import app.dodb.guessimate.session.api.query.FindDeckByNameQuery;
 import app.dodb.smd.api.command.CommandGateway;
 import app.dodb.smd.api.command.CommandHandler;
 import app.dodb.smd.api.event.EventPublisher;
-import app.dodb.smd.api.metadata.datetime.DatetimeProvider;
+import app.dodb.smd.api.metadata.time.TimeProvider;
 import app.dodb.smd.api.query.QueryGateway;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.time.ZoneId;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static org.apache.logging.log4j.util.Strings.isBlank;
 
@@ -47,7 +48,7 @@ public class LobbyCommandHandler {
     private final EventPublisher eventPublisher;
     private final LobbyRepository lobbyRepository;
     private final UsernameGenerator usernameGenerator;
-    private final DatetimeProvider datetimeProvider;
+    private final TimeProvider timeProvider;
     private final UserConnectivityChecker userConnectivityChecker;
 
     public LobbyCommandHandler(QueryGateway queryGateway,
@@ -55,22 +56,26 @@ public class LobbyCommandHandler {
                                EventPublisher eventPublisher,
                                LobbyRepository lobbyRepository,
                                UsernameGenerator usernameGenerator,
-                               DatetimeProvider datetimeProvider,
+                               TimeProvider timeProvider,
                                UserConnectivityChecker userConnectivityChecker) {
         this.queryGateway = queryGateway;
         this.commandGateway = commandGateway;
         this.eventPublisher = eventPublisher;
         this.lobbyRepository = lobbyRepository;
         this.usernameGenerator = usernameGenerator;
-        this.datetimeProvider = datetimeProvider;
+        this.timeProvider = timeProvider;
         this.userConnectivityChecker = userConnectivityChecker;
     }
 
     @CommandHandler
-    public void handle(ConnectUserToLobbyCommand command) {
+    public LobbyInfoSetEvent handle(ConnectUserToLobbyCommand command) {
         var userId = new UserId(command.userId());
         var sessionId = new SessionId(command.sessionId());
-        doWithLobby(sessionId, lobby -> lobby.connect(userId, determineUsername(command)));
+        return doWithLobby(
+            sessionId,
+            lobby -> lobby.connect(userId, determineUsername(command)),
+            lobby -> lobby.snapshotFor(userId)
+        );
     }
 
     @CommandHandler
@@ -85,7 +90,7 @@ public class LobbyCommandHandler {
         var userId = new UserId(command.userId());
         var sessionId = new SessionId(command.sessionId());
         doWithLobby(sessionId, lobby -> {
-            Instant now = datetimeProvider.now().atZone(ZoneId.systemDefault()).toInstant();
+            Instant now = timeProvider.now();
             switch (command.command()) {
                 case SetUserRoleCommand(var role) -> lobby.setUserRole(userId, role);
                 case SetUsernameCommand(var username) -> lobby.setUserName(userId, username);
@@ -116,10 +121,16 @@ public class LobbyCommandHandler {
     }
 
     private void doWithLobby(SessionId sessionId, Consumer<Lobby> consumer) {
+        doWithLobby(sessionId, consumer, lobby -> null);
+    }
+
+    private <T> T doWithLobby(SessionId sessionId, Consumer<Lobby> consumer, Function<Lobby, T> resultProvider) {
         var lobby = lobbyRepository.findBySessionId(sessionId).orElseThrow();
         consumer.accept(lobby);
         lobby.tryAutoCompleteEstimation(commandGateway);
+        T result = resultProvider.apply(lobby);
         lobby.consumeEvents().forEach(eventPublisher::publish);
+        return result;
     }
 
     private String determineUsername(ConnectUserToLobbyCommand command) {

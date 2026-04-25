@@ -3,6 +3,7 @@ package app.dodb.guessimate.lobby.drivingadapter.ws;
 import app.dodb.guessimate.lobby.api.command.ConnectUserToLobbyCommand;
 import app.dodb.guessimate.lobby.api.command.DisconnectUserFromLobbyCommand;
 import app.dodb.guessimate.lobby.api.command.UserActionCommand;
+import app.dodb.guessimate.lobby.api.event.LobbyInfoSetEvent;
 import app.dodb.smd.api.command.CommandGateway;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -25,7 +26,11 @@ public class LobbyWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         var context = contextManager.addSession(session);
-        commandGateway.send(new ConnectUserToLobbyCommand(context.sessionId(), context.userId(), context.userName()));
+        LobbyInfoSetEvent lobbyInfo = commandGateway.send(
+            new ConnectUserToLobbyCommand(context.sessionId(), context.userId(), context.userName())
+        );
+        context.send(lobbyInfo);
+        contextManager.subscribe(context.sessionId(), context.userId());
     }
 
     @Override
@@ -36,7 +41,9 @@ public class LobbyWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
-        var context = contextManager.removeSession(session);
+        var context = contextManager.getContextBy(session);
+        contextManager.unsubscribe(context.sessionId(), context.userId());
+        contextManager.removeSession(session);
         commandGateway.send(new DisconnectUserFromLobbyCommand(context.sessionId(), context.userId()));
     }
 }

@@ -2,7 +2,9 @@ package app.dodb.guessimate.lobby.usecase;
 
 import app.dodb.guessimate.lobby.api.command.ConnectUserToLobbyCommand;
 import app.dodb.guessimate.lobby.api.event.AutoJoinUpdatedEvent;
+import app.dodb.guessimate.lobby.api.event.LobbyInfoSetEvent;
 import app.dodb.guessimate.lobby.api.event.UserConnectedEvent;
+import app.dodb.guessimate.lobby.api.event.UserInfo;
 import app.dodb.guessimate.lobby.api.event.UserRoleSetEvent;
 import app.dodb.guessimate.lobby.usecase.stubs.UsernameGeneratorStub;
 import jakarta.inject.Inject;
@@ -34,20 +36,26 @@ class ConnectUserToLobbyCommandHandlerTest extends CommandHandlerTestBase {
     void withUsername() {
         given();
 
-        smd.send(new ConnectUserToLobbyCommand(SESSION_ID_VALUE, USER_ID_VALUE, Optional.of(ANOTHER_USERNAME_VALUE)));
+        LobbyInfoSetEvent snapshot = smd.send(
+            new ConnectUserToLobbyCommand(SESSION_ID_VALUE, USER_ID_VALUE, Optional.of(ANOTHER_USERNAME_VALUE))
+        );
 
         assertThat(smd.getEvents())
             .containsExactly(new UserConnectedEvent(SESSION_ID_VALUE, USER_ID_VALUE, ANOTHER_USERNAME_VALUE));
+        assertThat(snapshot.users())
+            .containsExactly(new UserInfo(USER_ID_VALUE, ANOTHER_USERNAME_VALUE, null, null, null, true));
     }
 
     @Test
     void withoutUsername() {
         given();
 
-        smd.send(new ConnectUserToLobbyCommand(SESSION_ID_VALUE, USER_ID_VALUE, Optional.empty()));
+        LobbyInfoSetEvent snapshot = smd.send(new ConnectUserToLobbyCommand(SESSION_ID_VALUE, USER_ID_VALUE, Optional.empty()));
 
         assertThat(smd.getEvents())
             .containsExactly(new UserConnectedEvent(SESSION_ID_VALUE, USER_ID_VALUE, USERNAME_VALUE));
+        assertThat(snapshot.users())
+            .containsExactly(new UserInfo(USER_ID_VALUE, USERNAME_VALUE, null, null, null, true));
     }
 
     @Test
@@ -56,12 +64,14 @@ class ConnectUserToLobbyCommandHandlerTest extends CommandHandlerTestBase {
             new AutoJoinUpdatedEvent(SESSION_ID_VALUE, ESTIMATOR)
         );
 
-        smd.send(new ConnectUserToLobbyCommand(SESSION_ID_VALUE, USER_ID_VALUE, Optional.empty()));
+        LobbyInfoSetEvent snapshot = smd.send(new ConnectUserToLobbyCommand(SESSION_ID_VALUE, USER_ID_VALUE, Optional.empty()));
 
         assertThat(smd.getEvents())
             .containsExactly(
                 new UserConnectedEvent(SESSION_ID_VALUE, USER_ID_VALUE, USERNAME_VALUE),
                 new UserRoleSetEvent(SESSION_ID_VALUE, USER_ID_VALUE, ESTIMATOR));
+        assertThat(snapshot.users())
+            .containsExactly(new UserInfo(USER_ID_VALUE, USERNAME_VALUE, null, null, ESTIMATOR, true));
     }
 
     @Test
@@ -70,11 +80,13 @@ class ConnectUserToLobbyCommandHandlerTest extends CommandHandlerTestBase {
             new AutoJoinUpdatedEvent(SESSION_ID_VALUE, OBSERVER)
         );
 
-        smd.send(new ConnectUserToLobbyCommand(SESSION_ID_VALUE, USER_ID_VALUE, Optional.empty()));
+        LobbyInfoSetEvent snapshot = smd.send(new ConnectUserToLobbyCommand(SESSION_ID_VALUE, USER_ID_VALUE, Optional.empty()));
 
         assertThat(smd.getEvents())
             .containsExactly(
                 new UserConnectedEvent(SESSION_ID_VALUE, USER_ID_VALUE, USERNAME_VALUE),
                 new UserRoleSetEvent(SESSION_ID_VALUE, USER_ID_VALUE, OBSERVER));
+        assertThat(snapshot.users())
+            .containsExactly(new UserInfo(USER_ID_VALUE, USERNAME_VALUE, null, null, OBSERVER, true));
     }
 }

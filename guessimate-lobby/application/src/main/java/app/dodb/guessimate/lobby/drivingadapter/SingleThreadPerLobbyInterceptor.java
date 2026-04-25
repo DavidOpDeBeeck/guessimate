@@ -36,7 +36,7 @@ class SingleThreadPerLobbyInterceptor implements CommandBusInterceptor, Disposab
 
     @Override
     public <R, C extends Command<R>> R intercept(CommandMessage<R, C> commandMessage, CommandBusInterceptorChain<R, C> chain) {
-        if (commandMessage.payload() instanceof LobbyCommand lobbyCommand) {
+        if (commandMessage.payload() instanceof LobbyCommand<?> lobbyCommand) {
             int index = (lobbyCommand.sessionId().hashCode() & Integer.MAX_VALUE) % PARTITIONS;
             ExecutorService executor = executors.get(index);
 
