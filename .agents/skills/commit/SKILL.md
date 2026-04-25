@@ -45,7 +45,7 @@ When this skill is invoked:
 2. **Tense**: Present tense, imperative mood ("add" not "added" or "adds")
 3. **Description**: Complete the sentence "This commit will..."
 4. **Body**: Optional, use for explaining "why" not "what"
-5. **NO AI attribution**: Never include "Generated with Claude Code" or "Co-Authored-By" lines
+5. **NO AI attribution**: Never include "Generated with Codex" or "Co-Authored-By" lines
 
 ### Examples
 
