@@ -53,17 +53,9 @@ class FindLobbyInfoForUserQueryIntegrationTest {
             .timerExpiresAt(timerExpiresAt)
             .status(LobbyStatus.ESTIMATING)
             .users(List.of(
-                new UserData.Builder()
-                    .userId(USER_ID_VALUE)
-                    .username(USERNAME_VALUE)
-                    .role(ESTIMATOR)
-                    .estimate(ESTIMATE_VALUE)
-                    .reaction(THUMBS_UP)
-                    .build(),
-                new UserData.Builder()
-                    .userId(ANOTHER_USER_ID_VALUE)
-                    .username(ANOTHER_USERNAME_VALUE)
-                    .build()))
+                new UserData(USER_ID_VALUE, USERNAME_VALUE, ESTIMATE_VALUE, THUMBS_UP, ESTIMATOR),
+                new UserData(ANOTHER_USER_ID_VALUE, ANOTHER_USERNAME_VALUE)
+            ))
             .build());
         entityManager.persist(lobbyView);
 

@@ -13,7 +13,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -101,9 +101,9 @@ public class SessionAcceptanceTest {
 
         assertThat(findEstimationsResponse)
             .usingRecursiveFieldByFieldElementComparator(RecursiveComparisonConfiguration.builder()
-                .withIgnoredFieldsOfTypes(LocalDateTime.class)
+                .withIgnoredFieldsOfTypes(Instant.class)
                 .build())
-            .containsExactly(new EstimationTO(estimationId, LocalDateTime.now(), aDeckTO(), List.of(ESTIMATE_VALUE), Set.of(SOLO_VOTE.name(), CONSENSUS.name()), 1, Map.of(ESTIMATE_VALUE, 1L)));
+            .containsExactly(new EstimationTO(estimationId, Instant.now(), aDeckTO(), List.of(ESTIMATE_VALUE), Set.of(SOLO_VOTE.name(), CONSENSUS.name()), 1, Map.of(ESTIMATE_VALUE, 1L)));
     }
 
     @Test
@@ -134,9 +134,9 @@ public class SessionAcceptanceTest {
 
         assertThat(findEstimationResponse)
             .usingRecursiveComparison(RecursiveComparisonConfiguration.builder()
-                .withIgnoredFieldsOfTypes(LocalDateTime.class)
+                .withIgnoredFieldsOfTypes(Instant.class)
                 .build())
-            .isEqualTo(new EstimationTO(estimationId, LocalDateTime.now(), aDeckTO(), List.of(ESTIMATE_VALUE), Set.of(SOLO_VOTE.name(), CONSENSUS.name()), 1, Map.of(ESTIMATE_VALUE, 1L)));
+            .isEqualTo(new EstimationTO(estimationId, Instant.now(), aDeckTO(), List.of(ESTIMATE_VALUE), Set.of(SOLO_VOTE.name(), CONSENSUS.name()), 1, Map.of(ESTIMATE_VALUE, 1L)));
     }
 
     @Test

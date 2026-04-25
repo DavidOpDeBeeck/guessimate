@@ -2,7 +2,7 @@ package app.dodb.guessimate.session.domain;
 
 import app.dodb.guessimate.session.domain.deck.Deck;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +22,7 @@ public class SessionTestConstants {
     }
 
     public static Estimation anEstimation() {
-        return new Estimation(ESTIMATION_ID, LocalDateTime.now(), List.of(anEstimate(), anotherEstimate()), aDeck());
+        return new Estimation(ESTIMATION_ID, Instant.now(), List.of(anEstimate(), anotherEstimate()), aDeck());
     }
 
     public static Deck aDeck() {

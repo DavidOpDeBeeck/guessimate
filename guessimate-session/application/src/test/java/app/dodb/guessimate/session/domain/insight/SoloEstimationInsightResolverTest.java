@@ -4,7 +4,7 @@ import app.dodb.guessimate.session.domain.Estimate;
 import app.dodb.guessimate.session.domain.Estimation;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import static app.dodb.guessimate.session.api.EstimationInsight.SOLO_VOTE;
@@ -18,7 +18,7 @@ class SoloEstimationInsightResolverTest {
     @Test
     void resolve_whenOnlyOneEstimate_thenReturnsSoloVote() {
         var firstEstimate = new Estimate("5");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate), modifiedFibonacci());
 
         var resolver = new SoloEstimationInsightResolver();
         var insights = resolver.resolve(estimation, emptySet());
@@ -30,7 +30,7 @@ class SoloEstimationInsightResolverTest {
     void resolve_whenTwoEstimates_thenReturnsEmpty() {
         var firstEstimate = new Estimate("5");
         var secondEstimate = new Estimate("8");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate), modifiedFibonacci());
 
         var resolver = new SoloEstimationInsightResolver();
         var insights = resolver.resolve(estimation, emptySet());
@@ -43,7 +43,7 @@ class SoloEstimationInsightResolverTest {
         var firstEstimate = new Estimate("5");
         var secondEstimate = new Estimate("8");
         var thirdEstimate = new Estimate("13");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate), modifiedFibonacci());
 
         var resolver = new SoloEstimationInsightResolver();
         var insights = resolver.resolve(estimation, emptySet());
@@ -53,7 +53,7 @@ class SoloEstimationInsightResolverTest {
 
     @Test
     void resolve_whenNoEstimates_thenReturnsEmpty() {
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(), modifiedFibonacci());
 
         var resolver = new SoloEstimationInsightResolver();
         var insights = resolver.resolve(estimation, emptySet());

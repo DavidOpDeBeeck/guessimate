@@ -4,7 +4,7 @@ import app.dodb.guessimate.session.domain.Estimate;
 import app.dodb.guessimate.session.domain.Estimation;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import static app.dodb.guessimate.session.api.EstimationInsight.SPLIT_DECISION;
@@ -22,7 +22,7 @@ class SplitDecisionEstimationInsightResolverTest {
         var thirdEstimate = new Estimate("8");
         var fourthEstimate = new Estimate("8");
         var fifthEstimate = new Estimate("13");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate, fifthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate, fifthEstimate), modifiedFibonacci());
 
         var resolver = new SplitDecisionEstimationInsightResolver(4, 1, 0.6);
         var insights = resolver.resolve(estimation, emptySet());
@@ -36,7 +36,7 @@ class SplitDecisionEstimationInsightResolverTest {
         var secondEstimate = new Estimate("5");
         var thirdEstimate = new Estimate("8");
         var fourthEstimate = new Estimate("8");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new SplitDecisionEstimationInsightResolver(4, 0, 1.0);
         var insights = resolver.resolve(estimation, emptySet());
@@ -49,7 +49,7 @@ class SplitDecisionEstimationInsightResolverTest {
         var firstEstimate = new Estimate("5");
         var secondEstimate = new Estimate("5");
         var thirdEstimate = new Estimate("8");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate), modifiedFibonacci());
 
         var resolver = new SplitDecisionEstimationInsightResolver(4, 1, 0.6);
         var insights = resolver.resolve(estimation, emptySet());
@@ -63,7 +63,7 @@ class SplitDecisionEstimationInsightResolverTest {
         var secondEstimate = new Estimate("5");
         var thirdEstimate = new Estimate("5");
         var fourthEstimate = new Estimate("5");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new SplitDecisionEstimationInsightResolver(4, 1, 0.6);
         var insights = resolver.resolve(estimation, emptySet());
@@ -78,7 +78,7 @@ class SplitDecisionEstimationInsightResolverTest {
         var thirdEstimate = new Estimate("5");
         var fourthEstimate = new Estimate("8");
         var fifthEstimate = new Estimate("13");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate, fifthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate, fifthEstimate), modifiedFibonacci());
 
         var resolver = new SplitDecisionEstimationInsightResolver(4, 1, 0.6);
         var insights = resolver.resolve(estimation, emptySet());
@@ -92,7 +92,7 @@ class SplitDecisionEstimationInsightResolverTest {
         var secondEstimate = new Estimate("8");
         var thirdEstimate = new Estimate("13");
         var fourthEstimate = new Estimate("21");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new SplitDecisionEstimationInsightResolver(4, 0, 0.6);
         var insights = resolver.resolve(estimation, emptySet());
@@ -102,7 +102,7 @@ class SplitDecisionEstimationInsightResolverTest {
 
     @Test
     void resolve_whenNoEstimates_thenReturnsEmpty() {
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(), modifiedFibonacci());
 
         var resolver = new SplitDecisionEstimationInsightResolver(4, 1, 0.6);
         var insights = resolver.resolve(estimation, emptySet());
@@ -118,7 +118,7 @@ class SplitDecisionEstimationInsightResolverTest {
         var fourthEstimate = new Estimate("8");
         var fifthEstimate = new Estimate("13");
         var sixthEstimate = new Estimate("21");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate, fifthEstimate, sixthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate, fifthEstimate, sixthEstimate), modifiedFibonacci());
 
         var resolver = new SplitDecisionEstimationInsightResolver(4, 0, 0.66);
         var insights = resolver.resolve(estimation, emptySet());

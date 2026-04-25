@@ -41,10 +41,7 @@ class FindActiveLobbiesQueryIntegrationTest {
             .timerExpiresAt(null)
             .status(LobbyStatus.ESTIMATING)
             .users(List.of(
-                new UserData.Builder()
-                    .userId(USER_ID_VALUE)
-                    .username(USERNAME_VALUE)
-                    .build()
+                new UserData(USER_ID_VALUE, USERNAME_VALUE)
             ))
             .build();
         entityManager.persist(new LobbyView(SESSION_ID_VALUE, lobbyData));

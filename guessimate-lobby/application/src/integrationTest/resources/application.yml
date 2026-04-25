@@ -4,4 +4,8 @@ spring:
     url: jdbc:tc:postgresql:///guessimate
   liquibase:
     enabled: true
-    change-log: classpath:db/changelog/master-lobby-api.xml
+    change-log: classpath:db/changelog/master.xml
+
+smd:
+  event-store:
+    enabled: true

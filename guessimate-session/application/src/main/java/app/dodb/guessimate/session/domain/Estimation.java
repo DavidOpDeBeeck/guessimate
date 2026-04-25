@@ -2,7 +2,7 @@ package app.dodb.guessimate.session.domain;
 
 import app.dodb.guessimate.session.domain.deck.Deck;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,11 +15,11 @@ import static java.util.stream.Collectors.groupingBy;
 public class Estimation {
 
     private final EstimationId estimationId;
-    private final LocalDateTime timestamp;
+    private final Instant timestamp;
     private final List<Estimate> estimates;
     private final Deck deck;
 
-    public Estimation(EstimationId estimationId, LocalDateTime timestamp, List<Estimate> estimates, Deck deck) {
+    public Estimation(EstimationId estimationId, Instant timestamp, List<Estimate> estimates, Deck deck) {
         this.estimationId = requireNonNull(estimationId);
         this.timestamp = requireNonNull(timestamp);
         this.estimates = requireNonNull(estimates);
@@ -37,7 +37,7 @@ public class Estimation {
         return estimationId;
     }
 
-    public LocalDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 

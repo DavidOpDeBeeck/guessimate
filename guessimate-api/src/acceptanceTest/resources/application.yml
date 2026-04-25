@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: Guessimate API
+  datasource:
+    url: jdbc:tc:postgresql:///guessimate
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+  jpa:
+    open-in-view: false
+    show-sql: true
+
+smd:
+  eventstore:
+    enabled: true
+
+otel:
+  trace:
+    endpoint: http://localhost:4318/v1/traces

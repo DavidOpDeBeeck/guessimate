@@ -4,7 +4,7 @@ import app.dodb.guessimate.session.domain.Estimate;
 import app.dodb.guessimate.session.domain.Estimation;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import static app.dodb.guessimate.session.api.EstimationInsight.OUTLIER_PRESENT;
@@ -21,7 +21,7 @@ class OutlierPresentEstimationInsightResolverTest {
         var secondEstimate = new Estimate("5");
         var thirdEstimate = new Estimate("5");
         var fourthEstimate = new Estimate("5");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new OutlierPresentEstimationInsightResolver(4, 3);
         var insights = resolver.resolve(estimation, emptySet());
@@ -34,7 +34,7 @@ class OutlierPresentEstimationInsightResolverTest {
         var firstEstimate = new Estimate("1");
         var secondEstimate = new Estimate("5");
         var thirdEstimate = new Estimate("5");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate), modifiedFibonacci());
 
         var resolver = new OutlierPresentEstimationInsightResolver(4, 3);
         var insights = resolver.resolve(estimation, emptySet());
@@ -48,7 +48,7 @@ class OutlierPresentEstimationInsightResolverTest {
         var secondEstimate = new Estimate("5");
         var thirdEstimate = new Estimate("5");
         var fourthEstimate = new Estimate("5");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new OutlierPresentEstimationInsightResolver(4, 5);
         var insights = resolver.resolve(estimation, emptySet());
@@ -62,7 +62,7 @@ class OutlierPresentEstimationInsightResolverTest {
         var secondEstimate = new Estimate("1");
         var thirdEstimate = new Estimate("5");
         var fourthEstimate = new Estimate("5");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new OutlierPresentEstimationInsightResolver(4, 3);
         var insights = resolver.resolve(estimation, emptySet());
@@ -76,7 +76,7 @@ class OutlierPresentEstimationInsightResolverTest {
         var secondEstimate = new Estimate("5");
         var thirdEstimate = new Estimate("5");
         var fourthEstimate = new Estimate("5");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new OutlierPresentEstimationInsightResolver(4, 3);
         var insights = resolver.resolve(estimation, emptySet());
@@ -90,7 +90,7 @@ class OutlierPresentEstimationInsightResolverTest {
         var secondEstimate = new Estimate("8");
         var thirdEstimate = new Estimate("8");
         var fourthEstimate = new Estimate("8");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new OutlierPresentEstimationInsightResolver(4, 4);
         var insights = resolver.resolve(estimation, emptySet());
@@ -100,7 +100,7 @@ class OutlierPresentEstimationInsightResolverTest {
 
     @Test
     void resolve_whenNoEstimates_thenReturnsEmpty() {
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(), modifiedFibonacci());
 
         var resolver = new OutlierPresentEstimationInsightResolver(4, 3);
         var insights = resolver.resolve(estimation, emptySet());
@@ -114,7 +114,7 @@ class OutlierPresentEstimationInsightResolverTest {
         var secondEstimate = new Estimate("1");
         var thirdEstimate = new Estimate("1");
         var fourthEstimate = new Estimate("13");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new OutlierPresentEstimationInsightResolver(4, 5);
         var insights = resolver.resolve(estimation, emptySet());
@@ -128,7 +128,7 @@ class OutlierPresentEstimationInsightResolverTest {
         var secondEstimate = new Estimate("1");
         var thirdEstimate = new Estimate("5");
         var fourthEstimate = new Estimate("13");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new OutlierPresentEstimationInsightResolver(4, 5);
         var insights = resolver.resolve(estimation, emptySet());

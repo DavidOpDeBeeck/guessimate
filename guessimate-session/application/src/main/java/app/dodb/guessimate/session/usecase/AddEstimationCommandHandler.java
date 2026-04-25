@@ -9,7 +9,7 @@ import app.dodb.guessimate.session.domain.deck.Deck;
 import app.dodb.guessimate.session.port.SessionRepository;
 import app.dodb.smd.api.command.CommandHandler;
 import app.dodb.smd.api.event.EventPublisher;
-import app.dodb.smd.api.metadata.datetime.DatetimeProvider;
+import app.dodb.smd.api.metadata.time.TimeProvider;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,14 +19,14 @@ public class AddEstimationCommandHandler {
 
     private final EventPublisher eventPublisher;
     private final SessionRepository sessionRepository;
-    private final DatetimeProvider datetimeProvider;
+    private final TimeProvider timeProvider;
 
     public AddEstimationCommandHandler(EventPublisher eventPublisher,
                                        SessionRepository sessionRepository,
-                                       DatetimeProvider datetimeProvider) {
+                                       TimeProvider timeProvider) {
         this.eventPublisher = eventPublisher;
         this.sessionRepository = sessionRepository;
-        this.datetimeProvider = datetimeProvider;
+        this.timeProvider = timeProvider;
     }
 
     @CommandHandler
@@ -35,7 +35,7 @@ public class AddEstimationCommandHandler {
         Session session = sessionRepository.findBy(sessionId)
             .orElseThrow(() -> new IllegalArgumentException("No session found with id: " + sessionId.value()));
 
-        EstimationId estimationId = session.addEstimation(Deck.from(command.deck()), extractEstimates(command), datetimeProvider.now());
+        EstimationId estimationId = session.addEstimation(Deck.from(command.deck()), extractEstimates(command), timeProvider.now());
         session.consumeEvents().forEach(eventPublisher::publish);
 
         return estimationId.value();

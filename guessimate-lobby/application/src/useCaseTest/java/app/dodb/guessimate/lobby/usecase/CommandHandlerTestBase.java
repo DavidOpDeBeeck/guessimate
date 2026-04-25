@@ -8,7 +8,7 @@ import app.dodb.smd.test.SMDTestExtension;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 
 import static app.dodb.guessimate.lobby.api.event.LobbyStatus.ESTIMATING;
@@ -19,7 +19,7 @@ import static java.util.Arrays.stream;
 
 public abstract class CommandHandlerTestBase {
 
-    protected static final LocalDateTime TIMESTAMP = LocalDateTime.now();
+    protected static final Instant TIMESTAMP = Instant.now();
 
     @Inject
     protected SMDTestExtension smd;

@@ -17,7 +17,7 @@ import app.dodb.guessimate.session.domain.insight.SoloEstimationInsightResolver;
 import app.dodb.guessimate.session.domain.insight.SplitDecisionEstimationInsightResolver;
 import app.dodb.smd.api.event.Event;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +52,7 @@ public class Session {
         record(new SessionCreatedEvent(sessionId.value()));
     }
 
-    public EstimationId addEstimation(Deck deck, List<Estimate> estimates, LocalDateTime timestamp) {
+    public EstimationId addEstimation(Deck deck, List<Estimate> estimates, Instant timestamp) {
         var validEstimates = estimates.stream()
             .filter(deck::exists)
             .sorted(deck.comparator())

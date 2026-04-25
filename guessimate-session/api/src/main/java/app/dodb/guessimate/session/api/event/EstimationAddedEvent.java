@@ -3,7 +3,7 @@ package app.dodb.guessimate.session.api.event;
 import app.dodb.guessimate.session.api.EstimationInsight;
 import app.dodb.guessimate.session.api.deck.DeckTO;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.groupingBy;
 
 public record EstimationAddedEvent(String sessionId,
                                    String estimationId,
-                                   LocalDateTime timestamp,
+                                   Instant timestamp,
                                    DeckTO deck,
                                    List<String> estimates,
                                    Set<EstimationInsight> insights) implements SessionEvent {

@@ -23,153 +23,145 @@ import app.dodb.guessimate.lobby.api.event.UsernameSetEvent;
 import app.dodb.guessimate.session.api.deck.DeckTO;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static app.dodb.guessimate.lobby.api.event.LobbyStatus.ESTIMATING;
 import static app.dodb.guessimate.lobby.api.event.LobbyStatus.ESTIMATION_COMPLETED;
-import static java.util.Objects.requireNonNull;
-import static java.util.Optional.ofNullable;
 
-public class LobbyData {
+public record LobbyData(
+    DeckTO deck,
+    boolean autoReveal,
+    UserRole autoJoinRole,
+    TimerDuration timerDuration,
+    boolean reactionsEnabled,
+    String previousEstimationId,
+    Instant timerExpiresAt,
+    LobbyStatus status,
+    List<UserData> users
+) {
 
-    private DeckTO deck;
-    private boolean autoReveal;
-    private UserRole autoJoinRole;
-    private TimerDuration timerDuration;
-    private boolean reactionsEnabled;
-    private String previousEstimationId;
-    private Instant timerExpiresAt;
-    private LobbyStatus status;
-    private List<UserData> users;
-
-    public LobbyData() {
+    LobbyData apply(DeckSetEvent event) {
+        return new LobbyData(event.deck(), autoReveal, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, users);
     }
 
-    public LobbyData(LobbyData.Builder builder) {
-        this.deck = requireNonNull(builder.deck);
-        this.autoReveal = requireNonNull(builder.autoReveal);
-        this.autoJoinRole = builder.autoJoinRole;
-        this.timerDuration = requireNonNull(builder.timerDuration);
-        this.reactionsEnabled = requireNonNull(builder.reactionsEnabled);
-        this.previousEstimationId = builder.previousEstimationId;
-        this.timerExpiresAt = builder.timerExpiresAt;
-        this.status = requireNonNull(builder.status);
-        this.users = requireNonNull(builder.users);
+    LobbyData apply(AutoRevealEnabledEvent event) {
+        return new LobbyData(deck, true, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, users);
     }
 
-    void apply(DeckSetEvent event) {
-        this.deck = event.deck();
+    LobbyData apply(AutoRevealDisabledEvent event) {
+        return new LobbyData(deck, false, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, users);
     }
 
-    void apply(AutoRevealEnabledEvent event) {
-        this.autoReveal = true;
+    LobbyData apply(AutoJoinUpdatedEvent event) {
+        return new LobbyData(deck, autoReveal, event.role(), timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, users);
     }
 
-    void apply(AutoRevealDisabledEvent event) {
-        this.autoReveal = false;
+    LobbyData apply(TimerDurationSetEvent event) {
+        return new LobbyData(deck, autoReveal, autoJoinRole, event.timerDuration(),
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, users);
     }
 
-    void apply(AutoJoinUpdatedEvent event) {
-        this.autoJoinRole = event.role();
+    LobbyData apply(ReactionsEnabledEvent event) {
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            true, previousEstimationId, timerExpiresAt, status, users);
     }
 
-    void apply(TimerDurationSetEvent event) {
-        this.timerDuration = event.timerDuration();
+    LobbyData apply(ReactionsDisabledEvent event) {
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            false, previousEstimationId, timerExpiresAt, status, users);
     }
 
-    void apply(ReactionsEnabledEvent event) {
-        this.reactionsEnabled = true;
+    LobbyData apply(EstimationStartedEvent event) {
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, event.timerExpiresAt(), ESTIMATING, users);
     }
 
-    void apply(ReactionsDisabledEvent event) {
-        this.reactionsEnabled = false;
+    LobbyData apply(EstimationCompletedEvent event) {
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            reactionsEnabled, event.estimationId(), timerExpiresAt, ESTIMATION_COMPLETED, users);
     }
 
-    void apply(EstimationStartedEvent event) {
-        this.status = ESTIMATING;
-        this.timerExpiresAt = event.timerExpiresAt();
+    LobbyData apply(UserConnectedEvent event) {
+        var updated = new ArrayList<>(users);
+        updated.add(new UserData(event.userId(), event.username()));
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, updated);
     }
 
-    void apply(EstimationCompletedEvent event) {
-        this.status = ESTIMATION_COMPLETED;
-        this.previousEstimationId = event.estimationId();
+    LobbyData apply(UserDisconnectedEvent event) {
+        var updated = new ArrayList<>(users);
+        updated.removeIf(u -> u.userId().equals(event.userId()));
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, updated);
     }
 
-    void apply(UserConnectedEvent event) {
-        users.add(new UserData.Builder()
-            .userId(event.userId())
-            .username(event.username())
-            .build());
+    LobbyData apply(UserRoleSetEvent event) {
+        var updated = users.stream()
+            .map(u -> u.userId().equals(event.userId()) ? u.withRole(event.role()) : u)
+            .toList();
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, updated);
     }
 
-    void apply(UserDisconnectedEvent event) {
-        users.removeIf(user -> user.getUserId().equals(event.userId()));
+    LobbyData apply(UsernameSetEvent event) {
+        var updated = users.stream()
+            .map(u -> u.userId().equals(event.userId()) ? u.withUsername(event.username()) : u)
+            .toList();
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, updated);
     }
 
-    void apply(UserRoleSetEvent event) {
-        findUser(event.userId()).ifPresent(user -> user.setRole(event.role()));
+    LobbyData apply(EstimateSetEvent event) {
+        var updated = users.stream()
+            .map(u -> u.userId().equals(event.userId()) ? u.withEstimate(event.estimate()) : u)
+            .toList();
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, updated);
     }
 
-    void apply(UsernameSetEvent event) {
-        findUser(event.userId()).ifPresent(user -> user.setUsername(event.username()));
+    LobbyData apply(EstimateClearedEvent event) {
+        var updated = users.stream()
+            .map(u -> u.userId().equals(event.userId()) ? u.withEstimate(null) : u)
+            .toList();
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, updated);
     }
 
-    void apply(EstimateSetEvent event) {
-        findUser(event.userId()).ifPresent(user -> user.setEstimate(event.estimate()));
+    LobbyData apply(ReactionSetEvent event) {
+        var updated = users.stream()
+            .map(u -> u.userId().equals(event.userId()) ? u.withReaction(event.emoji()) : u)
+            .toList();
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, updated);
     }
 
-    void apply(EstimateClearedEvent event) {
-        findUser(event.userId()).ifPresent(user -> user.setEstimate(null));
-    }
-
-    void apply(ReactionSetEvent event) {
-        findUser(event.userId()).ifPresent(user -> user.setReaction(event.emoji()));
-    }
-
-    void apply(ReactionClearedEvent event) {
-        findUser(event.userId()).ifPresent(user -> user.setReaction(null));
-    }
-
-    private Optional<UserData> findUser(String userId) {
-        return users.stream().filter(user -> user.getUserId().equals(userId)).findFirst();
-    }
-
-    public DeckTO getDeck() {
-        return deck;
-    }
-
-    public boolean isAutoReveal() {
-        return autoReveal;
+    LobbyData apply(ReactionClearedEvent event) {
+        var updated = users.stream()
+            .map(u -> u.userId().equals(event.userId()) ? u.withReaction(null) : u)
+            .toList();
+        return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+            reactionsEnabled, previousEstimationId, timerExpiresAt, status, updated);
     }
 
     public Optional<UserRole> getAutoJoinRole() {
-        return ofNullable(autoJoinRole);
-    }
-
-    public TimerDuration getTimerDuration() {
-        return timerDuration;
-    }
-
-    public boolean isReactionsEnabled() {
-        return reactionsEnabled;
+        return Optional.ofNullable(autoJoinRole);
     }
 
     public Optional<String> getPreviousEstimationId() {
-        return ofNullable(previousEstimationId);
+        return Optional.ofNullable(previousEstimationId);
     }
 
     public Optional<Instant> getTimerExpiresAt() {
-        return ofNullable(timerExpiresAt);
+        return Optional.ofNullable(timerExpiresAt);
     }
 
-    public LobbyStatus getStatus() {
-        return status;
-    }
-
-    public List<UserData> getUsers() {
-        return users;
-    }
+    // --- Builder for construction ---
 
     public static final class Builder {
 
@@ -229,7 +221,8 @@ public class LobbyData {
         }
 
         public LobbyData build() {
-            return new LobbyData(this);
+            return new LobbyData(deck, autoReveal, autoJoinRole, timerDuration,
+                reactionsEnabled, previousEstimationId, timerExpiresAt, status, users);
         }
     }
 }

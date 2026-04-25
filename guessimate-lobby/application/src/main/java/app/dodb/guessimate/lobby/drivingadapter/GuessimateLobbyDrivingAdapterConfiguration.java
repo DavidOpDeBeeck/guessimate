@@ -4,23 +4,14 @@ import app.dodb.guessimate.lobby.api.command.WebSocketCommand;
 import app.dodb.guessimate.lobby.api.event.WebSocketEvent;
 import app.dodb.smd.api.event.bus.ProcessingGroupsConfigurer;
 import app.dodb.smd.spring.EnableSMD;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTypeResolverBuilder;
-import com.fasterxml.jackson.databind.cfg.MapperConfig;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import static com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_FINAL;
-import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
-import static com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator.Validity.ALLOWED;
-import static com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator.Validity.DENIED;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 @ComponentScan
@@ -36,44 +27,53 @@ public class GuessimateLobbyDrivingAdapterConfiguration {
 
     @Bean
     public ObjectMapper webSocketObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-
-        mapper.setDefaultTyping(new WebSocketTypeResolverBuilder());
-        for (Class<?> commandClass : WebSocketCommand.class.getPermittedSubclasses()) {
-            mapper.registerSubtypes(new NamedType(commandClass, commandClass.getSimpleName()));
-        }
-
-        mapper.disable(WRITE_DATES_AS_TIMESTAMPS);
-        mapper.registerModule(new JavaTimeModule());
-
-        return mapper;
+        return JsonMapper.builder()
+            .addMixIn(WebSocketCommand.class, WebSocketCommandMixin.class)
+            .addMixIn(WebSocketEvent.class, WebSocketEventMixin.class)
+            .build();
     }
 
-    private static class WebSocketTypeResolverBuilder extends DefaultTypeResolverBuilder {
-
-        public WebSocketTypeResolverBuilder() {
-            super(NON_FINAL, new WebSocketPolymorphicTypeValidator());
-            init(JsonTypeInfo.Id.SIMPLE_NAME, null);
-            inclusion(JsonTypeInfo.As.PROPERTY);
-            typeProperty("type");
-        }
-
-        @Override
-        public boolean useForType(JavaType t) {
-            Class<?> rawClass = t.getRawClass();
-            return WebSocketEvent.class.isAssignableFrom(rawClass) || WebSocketCommand.class.isAssignableFrom(rawClass);
-        }
+    @JsonTypeInfo(use = JsonTypeInfo.Id.SIMPLE_NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+    @JsonSubTypes({
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.SetUsernameCommand.class, name = "SetUsernameCommand"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.SetEstimateCommand.class, name = "SetEstimateCommand"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.ClearEstimateCommand.class, name = "ClearEstimateCommand"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.StartEstimationCommand.class, name = "StartEstimationCommand"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.CompleteEstimationCommand.class, name = "CompleteEstimationCommand"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.SetUserRoleCommand.class, name = "SetUserRoleCommand"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.SetDeckCommand.class, name = "SetDeckCommand"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.SetAutoRevealCommand.class, name = "SetAutoRevealCommand"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.SetTimerDurationCommand.class, name = "SetTimerDurationCommand"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.SetReactionsEnabledCommand.class, name = "SetReactionsEnabledCommand"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.SetReactionCommand.class, name = "SetReactionCommand"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.command.SetAutoJoinCommand.class, name = "SetAutoJoinCommand")
+    })
+    private interface WebSocketCommandMixin {
     }
 
-    private static class WebSocketPolymorphicTypeValidator extends PolymorphicTypeValidator.Base {
-
-        @Override
-        public Validity validateBaseType(MapperConfig<?> config, JavaType baseType) {
-            Class<?> rawClass = baseType.getRawClass();
-            return WebSocketEvent.class.isAssignableFrom(rawClass) || WebSocketCommand.class.isAssignableFrom(rawClass)
-                ? ALLOWED
-                : DENIED;
-        }
+    @JsonTypeInfo(use = JsonTypeInfo.Id.SIMPLE_NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+    @JsonSubTypes({
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.EstimateSetEvent.class, name = "EstimateSetEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.EstimateClearedEvent.class, name = "EstimateClearedEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.EstimationCompletedEvent.class, name = "EstimationCompletedEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.EstimationStartedEvent.class, name = "EstimationStartedEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.KeepAliveEvent.class, name = "KeepAliveEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.LobbyInfoSetEvent.class, name = "LobbyInfoSetEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.UserConnectedEvent.class, name = "UserConnectedEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.UserDisconnectedEvent.class, name = "UserDisconnectedEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.UsernameSetEvent.class, name = "UsernameSetEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.UserRoleSetEvent.class, name = "UserRoleSetEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.DeckSetEvent.class, name = "DeckSetEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.AutoRevealEnabledEvent.class, name = "AutoRevealEnabledEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.AutoRevealDisabledEvent.class, name = "AutoRevealDisabledEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.TimerDurationSetEvent.class, name = "TimerDurationSetEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.ReactionsDisabledEvent.class, name = "ReactionsDisabledEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.ReactionsEnabledEvent.class, name = "ReactionsEnabledEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.ReactionSetEvent.class, name = "ReactionSetEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.ReactionClearedEvent.class, name = "ReactionClearedEvent"),
+        @JsonSubTypes.Type(value = app.dodb.guessimate.lobby.api.event.AutoJoinUpdatedEvent.class, name = "AutoJoinUpdatedEvent")
+    })
+    private interface WebSocketEventMixin {
     }
 
 }

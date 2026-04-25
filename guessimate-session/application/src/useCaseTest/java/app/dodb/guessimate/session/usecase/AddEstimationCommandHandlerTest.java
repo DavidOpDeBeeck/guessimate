@@ -9,7 +9,7 @@ import app.dodb.smd.test.SMDTestExtension;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @UseCaseTest
 class AddEstimationCommandHandlerTest {
 
-    private static final LocalDateTime TIMESTAMP = LocalDateTime.now();
+    private static final Instant TIMESTAMP = Instant.now();
 
     @Inject
     private SMDTestExtension smd;

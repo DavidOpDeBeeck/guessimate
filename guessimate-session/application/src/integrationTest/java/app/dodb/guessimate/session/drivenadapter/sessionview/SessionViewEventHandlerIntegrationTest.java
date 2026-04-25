@@ -10,7 +10,7 @@ import jakarta.inject.Inject;
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,23 +46,23 @@ class SessionViewEventHandlerIntegrationTest {
     @Test
     void handleEstimationAddedEvent() {
         eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
-        eventBus.publish(new EstimationAddedEvent(SESSION_ID_VALUE, ESTIMATION_ID_VALUE, LocalDateTime.now(), aDeckTO(), List.of(ESTIMATE_VALUE), Set.of(SOLO_VOTE)));
+        eventBus.publish(new EstimationAddedEvent(SESSION_ID_VALUE, ESTIMATION_ID_VALUE, Instant.now(), aDeckTO(), List.of(ESTIMATE_VALUE), Set.of(SOLO_VOTE)));
 
         var actual = repository.findById(SESSION_ID_VALUE)
             .orElse(null);
 
         assertThat(actual)
             .usingRecursiveComparison(RecursiveComparisonConfiguration.builder()
-                .withIgnoredFieldsOfTypes(LocalDateTime.class)
+                .withIgnoredFieldsOfTypes(Instant.class)
                 .build())
-            .isEqualTo(new SessionView(SESSION_ID_VALUE, new SessionViewData(Set.of(new EstimationTO(ESTIMATION_ID_VALUE, LocalDateTime.now(), aDeckTO(), List.of(ESTIMATE_VALUE),
+            .isEqualTo(new SessionView(SESSION_ID_VALUE, new SessionViewData(Set.of(new EstimationTO(ESTIMATION_ID_VALUE, Instant.now(), aDeckTO(), List.of(ESTIMATE_VALUE),
                 Set.of(SOLO_VOTE.name()), 1, Map.of(ESTIMATE_VALUE, 1L))))));
     }
 
     @Test
     void handleEstimationRemovedEvent() {
         eventBus.publish(new SessionCreatedEvent(SESSION_ID_VALUE));
-        eventBus.publish(new EstimationAddedEvent(SESSION_ID_VALUE, ESTIMATION_ID_VALUE, LocalDateTime.now(), aDeckTO(), List.of(ESTIMATE_VALUE), Set.of(SOLO_VOTE)));
+        eventBus.publish(new EstimationAddedEvent(SESSION_ID_VALUE, ESTIMATION_ID_VALUE, Instant.now(), aDeckTO(), List.of(ESTIMATE_VALUE), Set.of(SOLO_VOTE)));
         eventBus.publish(new EstimationRemovedEvent(SESSION_ID_VALUE, ESTIMATION_ID_VALUE));
 
         var actual = repository.findById(SESSION_ID_VALUE)
@@ -70,7 +70,7 @@ class SessionViewEventHandlerIntegrationTest {
 
         assertThat(actual)
             .usingRecursiveComparison(RecursiveComparisonConfiguration.builder()
-                .withIgnoredFieldsOfTypes(LocalDateTime.class)
+                .withIgnoredFieldsOfTypes(Instant.class)
                 .build())
             .isEqualTo(new SessionView(SESSION_ID_VALUE, new SessionViewData(emptySet())));
     }

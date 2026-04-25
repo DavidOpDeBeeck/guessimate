@@ -36,11 +36,11 @@ public class SessionView implements Serializable {
     }
 
     void apply(EstimationAddedEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(EstimationRemovedEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     public String getSessionId() {
@@ -48,6 +48,6 @@ public class SessionView implements Serializable {
     }
 
     public Set<EstimationTO> getEstimations() {
-        return data.getEstimations();
+        return data.estimations();
     }
 }

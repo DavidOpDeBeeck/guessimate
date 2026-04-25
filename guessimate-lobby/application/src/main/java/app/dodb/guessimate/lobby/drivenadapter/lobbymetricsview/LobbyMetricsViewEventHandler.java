@@ -38,38 +38,22 @@ public class LobbyMetricsViewEventHandler {
 
     @EventHandler
     public void on(UserConnectedEvent event) {
-        repository.findById(event.sessionId())
-            .ifPresent(view -> {
-                view.apply(event, Instant.now());
-                repository.save(view);
-            });
+        updateView(event.sessionId(), view -> view.apply(event, Instant.now()));
     }
 
     @EventHandler
     public void on(UserDisconnectedEvent event) {
-        repository.findById(event.sessionId())
-            .ifPresent(view -> {
-                view.apply(event, Instant.now());
-                repository.save(view);
-            });
+        updateView(event.sessionId(), view -> view.apply(event, Instant.now()));
     }
 
     @EventHandler
     public void on(EstimationStartedEvent event) {
-        repository.findById(event.sessionId())
-            .ifPresent(view -> {
-                view.apply(event, Instant.now());
-                repository.save(view);
-            });
+        updateView(event.sessionId(), view -> view.apply(event, Instant.now()));
     }
 
     @EventHandler
     public void on(EstimationCompletedEvent event) {
-        repository.findById(event.sessionId())
-            .ifPresent(view -> {
-                view.apply(event, Instant.now());
-                repository.save(view);
-            });
+        updateView(event.sessionId(), view -> view.apply(event, Instant.now()));
     }
 
     @EventHandler
@@ -123,9 +107,13 @@ public class LobbyMetricsViewEventHandler {
     }
 
     private void updateLastActivity(String sessionId) {
+        updateView(sessionId, view -> view.updateLastActivity(Instant.now()));
+    }
+
+    private void updateView(String sessionId, java.util.function.Consumer<LobbyMetricsView> updater) {
         repository.findById(sessionId)
             .ifPresent(view -> {
-                view.updateLastActivity(Instant.now());
+                updater.accept(view);
                 repository.save(view);
             });
     }

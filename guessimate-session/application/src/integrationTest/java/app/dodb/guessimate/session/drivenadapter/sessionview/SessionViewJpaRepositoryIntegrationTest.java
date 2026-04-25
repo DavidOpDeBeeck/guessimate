@@ -8,7 +8,7 @@ import jakarta.persistence.EntityManager;
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Set;
 
 import static app.dodb.guessimate.session.api.SessionApiTestConstants.SESSION_ID_VALUE;
@@ -36,7 +36,7 @@ class SessionViewJpaRepositoryIntegrationTest {
         assertThat(actual)
             .usingRecursiveComparison(RecursiveComparisonConfiguration.builder()
                 .withIgnoreCollectionOrder(true)
-                .withIgnoredFieldsOfTypes(LocalDateTime.class)
+                .withIgnoredFieldsOfTypes(Instant.class)
                 .build())
             .isEqualTo(new Session(new SessionState(SESSION_ID, Set.of(anEstimation()))));
     }

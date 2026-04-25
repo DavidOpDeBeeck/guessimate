@@ -1,10 +1,10 @@
 package app.dodb.guessimate.lobby.drivingadapter.ws;
 
 import app.dodb.guessimate.lobby.api.command.WebSocketCommand;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -40,7 +40,7 @@ public record WebSocketContext(WebSocketSession webSocketSession, ObjectMapper o
     public WebSocketCommand receive(TextMessage message) {
         try {
             return objectMapper.readValue(message.getPayload(), WebSocketCommand.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new RuntimeException(e);
         }
     }

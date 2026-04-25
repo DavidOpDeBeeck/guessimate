@@ -24,10 +24,13 @@ spring:
     change-log: classpath:db/changelog/master.xml
   jpa:
     open-in-view: false
-
 otel:
   trace:
     endpoint: http://tempo:4318/v1/traces
+
+smd:
+  eventstore:
+    enabled: true
 
 management:
   tracing:

@@ -17,7 +17,8 @@ public class LobbyCreationEventHandler {
     private final EventPublisher eventPublisher;
     private final QueryGateway queryGateway;
 
-    public LobbyCreationEventHandler(EventPublisher eventPublisher, QueryGateway queryGateway) {
+    public LobbyCreationEventHandler(EventPublisher eventPublisher,
+                                     QueryGateway queryGateway) {
         this.eventPublisher = eventPublisher;
         this.queryGateway = queryGateway;
     }

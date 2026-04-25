@@ -4,7 +4,7 @@ import app.dodb.guessimate.session.domain.Estimate;
 import app.dodb.guessimate.session.domain.Estimation;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import static app.dodb.guessimate.session.api.EstimationInsight.ALL_UNIQUE;
@@ -21,7 +21,7 @@ class AllUniqueEstimationInsightResolverTest {
         var secondEstimate = new Estimate("2");
         var thirdEstimate = new Estimate("3");
         var fourthEstimate = new Estimate("5");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new AllUniqueEstimationInsightResolver(4);
         var insights = resolver.resolve(estimation, emptySet());
@@ -34,7 +34,7 @@ class AllUniqueEstimationInsightResolverTest {
         var firstEstimate = new Estimate("1");
         var secondEstimate = new Estimate("2");
         var thirdEstimate = new Estimate("3");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate), modifiedFibonacci());
 
         var resolver = new AllUniqueEstimationInsightResolver(4);
         var insights = resolver.resolve(estimation, emptySet());
@@ -48,7 +48,7 @@ class AllUniqueEstimationInsightResolverTest {
         var secondEstimate = new Estimate("2");
         var thirdEstimate = new Estimate("3");
         var fourthEstimate = new Estimate("5");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate), modifiedFibonacci());
 
         var resolver = new AllUniqueEstimationInsightResolver(4);
         var insights = resolver.resolve(estimation, emptySet());
@@ -58,7 +58,7 @@ class AllUniqueEstimationInsightResolverTest {
 
     @Test
     void resolve_whenNoEstimates_thenReturnsEmpty() {
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(), modifiedFibonacci());
 
         var resolver = new AllUniqueEstimationInsightResolver(4);
         var insights = resolver.resolve(estimation, emptySet());
@@ -69,7 +69,7 @@ class AllUniqueEstimationInsightResolverTest {
     @Test
     void resolve_whenOnlyOneEstimate_thenReturnsEmpty() {
         var firstEstimate = new Estimate("1");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate), modifiedFibonacci());
 
         var resolver = new AllUniqueEstimationInsightResolver(4);
         var insights = resolver.resolve(estimation, emptySet());
@@ -84,7 +84,7 @@ class AllUniqueEstimationInsightResolverTest {
         var thirdEstimate = new Estimate("3");
         var fourthEstimate = new Estimate("5");
         var fifthEstimate = new Estimate("8");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate, fifthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate, fifthEstimate), modifiedFibonacci());
 
         var resolver = new AllUniqueEstimationInsightResolver(4);
         var insights = resolver.resolve(estimation, emptySet());
@@ -99,7 +99,7 @@ class AllUniqueEstimationInsightResolverTest {
         var thirdEstimate = new Estimate("2");
         var fourthEstimate = new Estimate("5");
         var fifthEstimate = new Estimate("5");
-        var estimation = new Estimation(randomEstimationId(), LocalDateTime.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate, fifthEstimate), modifiedFibonacci());
+        var estimation = new Estimation(randomEstimationId(), Instant.now(), List.of(firstEstimate, secondEstimate, thirdEstimate, fourthEstimate, fifthEstimate), modifiedFibonacci());
 
         var resolver = new AllUniqueEstimationInsightResolver(4);
         var insights = resolver.resolve(estimation, emptySet());

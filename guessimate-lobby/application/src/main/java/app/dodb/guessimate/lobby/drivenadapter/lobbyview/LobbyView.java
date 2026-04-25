@@ -57,75 +57,71 @@ public class LobbyView implements Serializable {
     }
 
     void apply(DeckSetEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(AutoRevealEnabledEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(AutoRevealDisabledEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(AutoJoinUpdatedEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(TimerDurationSetEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(ReactionsEnabledEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(ReactionsDisabledEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(EstimationStartedEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(EstimationCompletedEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(UserConnectedEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(UserDisconnectedEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(UserRoleSetEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(UsernameSetEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(EstimateSetEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(EstimateClearedEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(ReactionSetEvent event) {
-        data.apply(event);
+        this.data = data.apply(event);
     }
 
     void apply(ReactionClearedEvent event) {
-        data.apply(event);
-    }
-
-    void apply(LobbyCreatedEvent event) {
-        // View is created by event handler, nothing to apply
+        this.data = data.apply(event);
     }
 
     public String getSessionId() {
@@ -133,11 +129,11 @@ public class LobbyView implements Serializable {
     }
 
     public DeckTO getDeck() {
-        return data.getDeck();
+        return data.deck();
     }
 
     public boolean isAutoReveal() {
-        return data.isAutoReveal();
+        return data.autoReveal();
     }
 
     public Optional<UserRole> getAutoJoinRole() {
@@ -145,11 +141,11 @@ public class LobbyView implements Serializable {
     }
 
     public TimerDuration getTimerDuration() {
-        return data.getTimerDuration();
+        return data.timerDuration();
     }
 
     public boolean isReactionsEnabled() {
-        return data.isReactionsEnabled();
+        return data.reactionsEnabled();
     }
 
     public Optional<String> getPreviousEstimationId() {
@@ -161,10 +157,10 @@ public class LobbyView implements Serializable {
     }
 
     public LobbyStatus getStatus() {
-        return data.getStatus();
+        return data.status();
     }
 
     public List<UserData> getUsers() {
-        return data.getUsers();
+        return data.users();
     }
 }

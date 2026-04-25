@@ -2,7 +2,7 @@ package app.dodb.guessimate.session.api;
 
 import app.dodb.guessimate.session.api.deck.DeckTO;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import static java.util.Collections.emptyMap;
@@ -23,7 +23,7 @@ public class SessionApiTestConstants {
     public static final String NON_EXISTENT_DECK_NAME_VALUE = "non-existent-deck";
 
     public static EstimationTO anEstimationTO() {
-        return new EstimationTO(ESTIMATION_ID_VALUE, LocalDateTime.now(), aDeckTO(), List.of(ESTIMATE_VALUE, ANOTHER_ESTIMATE_VALUE), emptySet(), 0, emptyMap());
+        return new EstimationTO(ESTIMATION_ID_VALUE, Instant.now(), aDeckTO(), List.of(ESTIMATE_VALUE, ANOTHER_ESTIMATE_VALUE), emptySet(), 0, emptyMap());
     }
 
     public static DeckTO aDeckTO() {

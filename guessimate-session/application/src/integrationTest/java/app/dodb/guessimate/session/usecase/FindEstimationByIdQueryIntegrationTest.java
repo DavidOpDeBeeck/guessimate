@@ -10,7 +10,7 @@ import jakarta.persistence.EntityManager;
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Set;
 
 import static app.dodb.guessimate.session.api.SessionApiTestConstants.ESTIMATION_ID_VALUE;
@@ -36,7 +36,7 @@ class FindEstimationByIdQueryIntegrationTest {
 
         assertThat(actual)
             .usingRecursiveComparison(RecursiveComparisonConfiguration.builder()
-                .withIgnoredFieldsOfTypes(LocalDateTime.class)
+                .withIgnoredFieldsOfTypes(Instant.class)
                 .build())
             .isEqualTo(anEstimationTO());
     }
