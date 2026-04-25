@@ -1,3 +1,5 @@
+import org.gradle.api.artifacts.VersionCatalogsExtension
+
 plugins {
     `java-library`
 }
@@ -6,6 +8,8 @@ group = "app.dodb"
 version = "1.0"
 
 subprojects {
+    val libs = rootProject.extensions.getByType<VersionCatalogsExtension>().named("libs")
+
     apply(plugin = "java-library")
     apply(plugin = "java-test-fixtures")
 
@@ -30,26 +34,15 @@ subprojects {
     }
 
     dependencies {
-        implementation(platform("org.springframework.boot:spring-boot-dependencies"))
-        implementation("jakarta.inject:jakarta.inject-api")
+        implementation(platform(libs.findLibrary("spring-boot-dependencies").get()))
+        implementation(libs.findLibrary("jakarta-inject-api").get())
 
-        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-        testImplementation("app.dodb:smd-spring-boot-starter-test")
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
-        testImplementation(platform("org.junit:junit-bom:5.10.0"))
-        testImplementation("org.junit.jupiter:junit-jupiter")
-        testImplementation("com.tngtech.archunit:archunit-junit5")
-
-        constraints {
-            implementation("app.dodb:smd-api:0.0.6")
-            implementation("app.dodb:smd-spring-boot-starter:0.0.6")
-            implementation("app.dodb:smd-spring-boot-starter-test:0.0.6")
-            implementation("com.google.guava:guava:33.5.0-jre")
-            implementation("org.springframework.boot:spring-boot-dependencies:3.4.12")
-            implementation("org.apache.commons:commons-collections4:4.5.0")
-            testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
-            testImplementation("org.testcontainers:postgresql:1.21.3")
-        }
+        testRuntimeOnly(libs.findLibrary("junit-platform-launcher").get())
+        testImplementation(libs.findLibrary("smd-spring-boot-starter-test").get())
+        testImplementation(libs.findLibrary("spring-boot-starter-test").get())
+        testImplementation(platform(libs.findLibrary("junit-bom").get()))
+        testImplementation(libs.findLibrary("junit-jupiter").get())
+        testImplementation(libs.findLibrary("archunit-junit5").get())
     }
 
     tasks.withType<Test>().configureEach {

@@ -1,5 +1,5 @@
 dependencies {
-    implementation("app.dodb:smd-api")
+    implementation(libs.smd.api)
     implementation(project(":guessimate-session:api"))
 
     testFixturesImplementation(project(":guessimate-session:api"))

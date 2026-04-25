@@ -1,0 +1,38 @@
+[versions]
+spring-boot = "4.0.6"
+smd = "0.0.8"
+junit = "5.10.0"
+archunit = "1.4.1"
+testcontainers = "1.21.3"
+guava = "33.5.0-jre"
+commons-collections4 = "4.5.0"
+
+[libraries]
+archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version.ref = "archunit" }
+commons-collections4 = { module = "org.apache.commons:commons-collections4", version.ref = "commons-collections4" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+jakarta-inject-api = { module = "jakarta.inject:jakarta.inject-api" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+liquibase-core = { module = "org.liquibase:liquibase-core" }
+micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
+micrometer-tracing-bridge-otel = { module = "io.micrometer:micrometer-tracing-bridge-otel" }
+opentelemetry-exporter-otlp = { module = "io.opentelemetry:opentelemetry-exporter-otlp" }
+postgresql = { module = "org.postgresql:postgresql" }
+smd-api = { module = "app.dodb:smd-api", version.ref = "smd" }
+smd-event-store = { module = "app.dodb:smd-event-store", version.ref = "smd" }
+smd-spring-boot-starter = { module = "app.dodb:smd-spring-boot-starter", version.ref = "smd" }
+smd-spring-boot-starter-test = { module = "app.dodb:smd-spring-boot-starter-test", version.ref = "smd" }
+spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+spring-boot-starter-liquibase = { module = "org.springframework.boot:spring-boot-starter-liquibase" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-websocket = { module = "org.springframework.boot:spring-boot-starter-websocket" }
+testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "testcontainers" }
+tomcat-embed-websocket = { module = "org.apache.tomcat.embed:tomcat-embed-websocket" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }

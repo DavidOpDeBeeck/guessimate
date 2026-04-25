@@ -1,3 +1,3 @@
 dependencies {
-    implementation("app.dodb:smd-api")
+    implementation(libs.smd.api)
 }
