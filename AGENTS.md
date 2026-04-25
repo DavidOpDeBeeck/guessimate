@@ -648,7 +648,7 @@ When the user asks to **plan a feature**, follow this workflow:
 
 ### Feature Plan Documentation
 
-**ALWAYS create a markdown file** in `.Codex/plans/` after implementing a feature:
+**ALWAYS create a markdown file** in `.agents/plans/` after implementing a feature:
 
 - **Filename**: `<feature-name>.md` (kebab-case)
 - **Contents**:
