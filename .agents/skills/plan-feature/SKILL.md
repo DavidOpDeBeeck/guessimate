@@ -33,9 +33,9 @@ When this skill is invoked:
    - Write the plan to the todo list using TodoWrite
 
 5. **Save Plan to File**
-   - Create `.Codex/plans/` directory if it doesn't exist
+   - Create `.agents/plans/` directory if it doesn't exist
    - Generate a slug from the feature name (e.g., "Custom Voting Decks" → `custom-voting-decks.md`)
-   - Write the plan to `.Codex/plans/<feature-slug>.md` using the Output Format below
+   - Write the plan to `.agents/plans/<feature-slug>.md` using the Output Format below
    - This creates a persistent record of the plan for reference
 
 6. **Present for Approval**
@@ -111,7 +111,7 @@ When this skill is invoked:
 
 ## File Naming Convention
 
-Plans are saved to `.Codex/plans/<feature-slug>.md` where:
+Plans are saved to `.agents/plans/<feature-slug>.md` where:
 - Feature slug is derived from the feature name
 - Convert to lowercase
 - Replace spaces and special characters with hyphens
@@ -158,7 +158,7 @@ Write the plan to the file using this structure:
 
 ## Example
 
-For a feature request like "Add ability to customize voting deck", the plan would be saved to `.Codex/plans/custom-voting-decks.md`:
+For a feature request like "Add ability to customize voting deck", the plan would be saved to `.agents/plans/custom-voting-decks.md`:
 
 ```markdown
 # Feature: Custom Voting Decks
