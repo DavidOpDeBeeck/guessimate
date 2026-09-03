@@ -1,0 +1,55 @@
+services:
+  frontend:
+    build:
+      context: ./guessimate-ui
+      dockerfile: Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/ > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/guessimate
+      SPRING_DATASOURCE_USERNAME: ${SERVICE_USER_POSTGRES}
+      SPRING_DATASOURCE_PASSWORD: ${SERVICE_PASSWORD_64_POSTGRES}
+      OTEL_TRACE_ENABLED: ${OTEL_TRACE_ENABLED:-false}
+      OTEL_TRACE_ENDPOINT: ${OTEL_EXPORTER_OTLP_TRACES_ENDPOINT:-}
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-t", "1", "--spider", "http://127.0.0.1:8081/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 45s
+    restart: unless-stopped
+
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: guessimate
+      POSTGRES_USER: ${SERVICE_USER_POSTGRES}
+      POSTGRES_PASSWORD: ${SERVICE_PASSWORD_64_POSTGRES}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U guessimate -d guessimate"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  postgres-data:

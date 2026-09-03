@@ -1,3 +1,5 @@
+const webSocketProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+
 export const environment = {
-  webSocketBaseUrl: 'wss://guessimate.app',
+  webSocketBaseUrl: `${webSocketProtocol}//${window.location.host}`,
 };

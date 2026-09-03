@@ -1,1 +1,17 @@
+.agents
+.git
+.github
+.gradle
+.gradle-user-home
+.idea
+.settings
+.vscode
+**/build
+**/out
+*.iml
+.classpath
+.project
+.env
+.env.*
+!.env.example
 guessimate-ui

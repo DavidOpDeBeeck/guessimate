@@ -6,9 +6,9 @@ spring:
       enabled: true
   datasource:
     name: guessimate
-    url: jdbc:postgresql://postgres:5432/guessimate
-    username: postgres
-    password: postgres
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/guessimate}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
     hikari:
       pool-name: guessimate-pool
@@ -26,7 +26,8 @@ spring:
     open-in-view: false
 otel:
   trace:
-    endpoint: http://tempo:4318/v1/traces
+    enabled: ${OTEL_TRACE_ENABLED:false}
+    endpoint: ${OTEL_TRACE_ENDPOINT:}
 
 smd:
   eventstore:
